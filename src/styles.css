@@ -37,6 +37,7 @@
     display: flex;
     flex-direction: column;
     height: 100dvh;
+    font-family: "Roboto", sans-serif;
   }
 
   header {
@@ -53,10 +54,81 @@
   nav {
     background-color: rgb(236, 236, 229);
   }
+  nav h3 {
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+  }
+
+  nav h3:hover {
+    background-color: orange;
+  }
+
+  .projects h3:first-child {
+    text-align: center;
+  }
+  
+
+  .dates {
+    margin-bottom: 2.5rem;
+  }
+
+  .content {
+    padding: 1rem 4rem;
+  }
+
+  .content > h1 {
+    margin-bottom: 1rem;
+  }
+
+  .todo button {
+    padding: 0;
+    line-height: normal;
+    margin-left: 1rem;
+    font-size: 1.3rem;
+    background-color: rgba(128, 128, 128, 0);
+    border: none;
+  }
+
+  .todos {
+    padding: 1rem 2rem;
+  }
+
+  .todo {
+    padding: 0.7rem;
+    font-size: 1.3rem;
+    border-top: 1px solid rgba(128, 128, 128, 0.3);
+    display: flex;
+  }
+
+  .todo .left {
+    flex: 1;
+  }
+
+  .todo .right {
+    align-content: center;
+  }
+
+  .todo p {
+    color: grey;
+    font-size: 1.1rem;
+  }
+
+  .todo input {
+    margin-right: 1rem;
+    scale: 1.5;
+  }
+
+
+
+
 
   footer {
     text-align: center;
     background-color: beige;
+    padding: 0.3rem;
+    font-weight: bold;
   }
+
+
 
 
