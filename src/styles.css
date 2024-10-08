@@ -69,8 +69,54 @@
   
 
   .dates {
-    margin-bottom: 2.5rem;
+    padding: 2rem;
   }
+
+  .projects {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .add-project {
+    order: 2;
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+  }
+
+  .add-project-ui {
+    order: 1;
+    display: none;
+  }
+
+  .add-project:hover {
+    background-color: orange;
+    border-radius: 10px;
+  }
+
+  .add-project-ui input {
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid black;
+  }
+
+  .add-task {
+    order: 1;
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    font-size: 1.2rem;
+    padding: 1rem;
+  }
+
+  .add-task-ui {
+    order: 1;
+    display: none;
+  }
+
 
   .content {
     padding: 1rem 4rem;
@@ -91,6 +137,8 @@
 
   .todos {
     padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
   }
 
   .todo {
@@ -98,25 +146,49 @@
     font-size: 1.3rem;
     border-top: 1px solid rgba(128, 128, 128, 0.3);
     display: flex;
+    flex-direction: column;
+  }
+
+  .initial {
+    padding: 0.7rem;
+    font-size: 1.3rem;
+    display: flex;
   }
 
   .todo .left {
     flex: 1;
+    display: flex;
   }
 
   .todo .right {
-    align-content: center;
+    margin-right: 4rem;
+    font-size: 1.5rem;
+    margin-top: 1%;
   }
 
-  .todo p {
+  .due-date {
     color: grey;
     font-size: 1.1rem;
+  }
+
+
+  textarea {
+    resize: none;
+  }
+
+  .add-task:hover {
+    background-color: rgb(241, 239, 239);
   }
 
   .todo input {
     margin-right: 1rem;
     scale: 1.5;
   }
+
+  .detail {
+    font-size: 1.1rem;
+  }
+
 
 
 
@@ -128,6 +200,9 @@
     padding: 0.3rem;
     font-weight: bold;
   }
+
+
+
 
 
 

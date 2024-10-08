@@ -1,8 +1,14 @@
 function handleProjects () {
     let projects = [];
-    let defaultProject = new Project("Default");
+    let defaultProject = new Project("EL Wesmo");
+    let defaultTodo1 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "10/28/2024", "High");
+    let defaultTodo2 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "10/28/2024", "High");
 
-    const getProjects = () => projects;
+    defaultProject.addTodo(defaultTodo1);
+    defaultProject.addTodo(defaultTodo2);
+
+    const getAllProjects = () => projects;
+    const getProject = (index) => projects[index];
     const addProject = function  (project){
         length = projects.push(project);
         project.index = length - 1;
@@ -11,7 +17,7 @@ function handleProjects () {
     addProject(defaultProject);
 
 
-    return {getProjects, addProject, removeProject}
+    return {getAllProjects, addProject, removeProject, getProject}
 }
 
 class Project {
@@ -22,7 +28,8 @@ class Project {
         this.todos = [];
     }
 
-    getTodos () { return this.todos;}
+    getAllTodos () { return this.todos; }
+    getTodo (index) { return this.todos[index]; }
 
     addTodo (todo) { 
         length = this.todos.push(todo);
@@ -36,12 +43,12 @@ class Project {
 
 class Todo {
 
-    constructor (title, description, dueDate, priority, complete = false) {
+    constructor (title, description, dueDate = "No Due Date", priority = "Normal") {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
-        this.complete = complete
+        this.complete = false;
     }
 
     getTodo () { return this }

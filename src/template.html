@@ -19,17 +19,45 @@
                 <h3>Today</h3>
                 <h3>Tomorrow</h3>
                 <h3>This Week</h3>
-                <h3>Upcoming</h3>
+                <h3>Important</h3>
             </div>
             <div class="projects">
                 <h3>My Projects</h3>
+                <form class="add-project-ui">
+                    <div class="input">
+                        <input type="text" id="proj-name" aria-label="Project Name" placeholder="Project Name" required>
+                    </div>
+                    <div class="form-buttons">
+                        <button>Confirm</button>
+                        <button type="button">Cancel</button>
+                    </div>
+                </form>
+                <button class="add-project">+ Add Project</button>
             </div>
         </nav>
         <div class="content">
-            <h1>Today</h1>
             <h2 class="project-name">Default</h2>
             <div class="todos">
-
+                <form class="add-task-ui">
+                    <input type="text" id="task-name" aria-label="Task name" placeholder="Task Name" required>
+                    <textarea id="task-desc" aria-label="Task description" placeholder="Description"></textarea>
+                    <input type="date" name="task_due" id="task-date">
+                    <div>
+                        <label for="low">Low</label>
+                        <input type="radio" name="task_priority" id="low" value="Low">
+                    </div>
+                    <div>
+                        <label for="low">Normal</label>
+                        <input type="radio" name="task_priority" id="normal" value="Normal" checked>
+                    </div>
+                    <div>
+                        <label for="low">High</label>
+                        <input type="radio" name="task_priority" id="high" value="High">
+                    </div>
+                    <button>Confirm</button>
+                    <button type="button">Cancel</button>
+                </form>
+                <button class="add-task">+ Add Task</button>
             </div>
         </div>
     </main>
@@ -48,25 +76,3 @@
 
 
 
-
-
-
-
-
-
-
-                <!-- <div class="todo">
-                    <div class="left">
-                        <div class="top">
-                            <input type="checkbox" name="" id="">
-                            <label for="">This is an example</label>
-                            <button>▼</button>
-                        </div>
-                        <div class="bottom">
-                            <p>07/10/2024</p>
-                        </div>
-                    </div>
-                    <div class="right">
-                        <p>Priority: High</p>
-                    </div>
-                </div> -->
