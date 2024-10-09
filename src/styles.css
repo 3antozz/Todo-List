@@ -126,13 +126,30 @@
     margin-bottom: 1rem;
   }
 
-  .todo button {
+  .expand {
     padding: 0;
     line-height: normal;
     margin-left: 1rem;
     font-size: 1.3rem;
     background-color: rgba(128, 128, 128, 0);
     border: none;
+  }
+
+  .expand:hover {
+    scale: 1.5;
+  }
+
+  .edit {
+    padding: 0;
+    line-height: normal;
+    margin-left: 1rem;
+    font-size: 2rem;
+    background-color: rgba(128, 128, 128, 0);
+    border: none;
+  }
+
+  .edit:hover {
+    scale: 1.5;
   }
 
   .todos {

@@ -1,4 +1,5 @@
 import {Project, Todo, handleProjects} from "./projects.js";
+import {format, isValid} from "date-fns";
 
 const displayNavProject = function (name, index) {
     const projects = document.querySelector(".projects");
@@ -59,6 +60,11 @@ const displayTodos = function (project){
         expandButton.textContent = "▼";
         expandButton.dataset.index = index;
 
+        const editButton = document.createElement("button");
+        editButton.classList.add("edit");
+        editButton.textContent = "✍";
+        editButton.dataset.index = index;
+
         const infoDiv = document.createElement("div");
         infoDiv.classList.add("info");
 
@@ -67,6 +73,11 @@ const displayTodos = function (project){
         if (todo.dueDate === "") {
             todo.dueDate = "No Due Date";
         }
+        if (isValid(todo.dueDate)) {
+            const formattedDate = format(new Date (todo.dueDate), "dd/MM/yyyy");
+            datePara.textContent = formattedDate;
+        }
+
         datePara.textContent = todo.dueDate;
 
         const rightDiv = document.createElement("div");
@@ -76,7 +87,7 @@ const displayTodos = function (project){
         priorityPara.textContent = `#${project.name}`;
 
         rightDiv.appendChild(priorityPara);
-        infoDiv.append(label, expandButton, datePara);
+        infoDiv.append(label, expandButton, editButton, datePara);
 
         checkboxDiv.append(input);
 
@@ -134,13 +145,19 @@ const hideProjectUI = function (addButton) {
     addUi.style.display = "none";
 }
 
-const showTaskUI = function (addButton) {
+const showTaskUI = function (addButton, edit = false) {
+    if (edit) {
+        const confirmTask = document.querySelector(".confirm");
+        confirmTask.classList.add("confirm-edit");
+    }
     const addUi = document.querySelector(".add-task-ui");
     addButton.style.display = "none";
     addUi.style.display = "block";
 }
 
 const hideTaskUI = function (addButton) {
+    const confirmTask = document.querySelector(".confirm");
+    confirmTask.classList.remove("confirm-edit");
     const addUi = document.querySelector(".add-task-ui");
     addButton.style.display = "block";
     addUi.style.display = "none";
