@@ -53,6 +53,7 @@
 
   nav {
     background-color: rgb(236, 236, 229);
+    padding-top: 2rem;
   }
   nav h3 {
     border-radius: 10px;
@@ -81,12 +82,16 @@
   
 
   .dates {
-    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
+
 
   .projects {
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
   }
 
   .add-project {
@@ -212,6 +217,7 @@
     border-top: 1px solid rgba(128, 128, 128, 0.3);
     display: flex;
     flex-direction: column;
+    border-radius: 10px;
   }
 
   .initial {
@@ -229,6 +235,10 @@
     margin-right: 4rem;
     font-size: 1.5rem;
     margin-top: 1%;
+  }
+
+  .completed-task {
+    background-color: lightgreen;
   }
 
   .due-date {

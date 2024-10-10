@@ -1,7 +1,7 @@
 import "./styles.css";
 import {Project, Todo, handleProjects} from "./projects.js";
 import { format, isBefore, isTomorrow, isThisWeek, isThisMonth, isToday, compareAsc, compareDesc } from "date-fns";
-import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI } from "./DOMHandler.js";
+import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodo,  displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos } from "./DOMHandler.js";
 
 
 
@@ -9,16 +9,18 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
     const projectsHandler = handleProjects();
     const defaultProject = projectsHandler.getProject(0);
     const clickHandler = dynamicButtonsEventListeners(projectsHandler);
+    sortButtonsHandler(projectsHandler, clickHandler);
     staticButtonsEventListeners(projectsHandler, clickHandler);
     displayAllProjectsNav(projectsHandler.getAllProjects());
     displayProjectName(defaultProject);
-    displayTodos(defaultProject);
+    displayAllTodos(defaultProject);
     clickHandler.expandButtonsListener();
     clickHandler.editTaskEventListener();
     clickHandler.projectsEventListener();
     clickHandler.editProjectEventListener();
     clickHandler.removeProjectEventListener();
     clickHandler.removeTaskEventListener();
+    clickHandler.checkboxEventListener()
 })();
 
 function staticButtonsEventListeners (projectsHandler, clickHandler) {
@@ -74,11 +76,12 @@ function staticButtonsEventListeners (projectsHandler, clickHandler) {
         event.preventDefault();
         const todo = new Todo(titleInput.value, descInput.value, dateInput.value, priorityValue);
         currentProject.addTodo(todo);
-        displayTodos(currentProject);
+        displayAllTodos(currentProject);
         hideTaskUI(addTaskButton);
         clickHandler.expandButtonsListener(clickHandler.getCurrentProject());
         clickHandler.editTaskEventListener();
         clickHandler.removeTaskEventListener();
+        clickHandler.checkboxEventListener()
     }
 
     const editTodo = function (event) {
@@ -96,11 +99,12 @@ function staticButtonsEventListeners (projectsHandler, clickHandler) {
         Todo.editTodo("description", descInput.value);
         Todo.editTodo("dueDate", dateInput.value);
         Todo.editTodo("priority", priorityValue);
-        displayTodos(currentProject);
+        displayAllTodos(currentProject);
         hideTaskUI(addTaskButton);
         clickHandler.expandButtonsListener(clickHandler.getCurrentProject());
         clickHandler.editTaskEventListener();
         clickHandler.removeTaskEventListener();
+        clickHandler.checkboxEventListener()
     }
 
 
@@ -160,6 +164,12 @@ function staticButtonsEventListeners (projectsHandler, clickHandler) {
 
 };
 
+
+
+
+
+
+
 function dynamicButtonsEventListeners  (projectsHandler) {
     const addTaskButton = document.querySelector(".add-task");
     let currentProjectIndex = 0;
@@ -184,10 +194,11 @@ function dynamicButtonsEventListeners  (projectsHandler) {
 
     const handleProjectSwitch = function (currentProject = projectsHandler.getProject(currentProjectIndex), projectIndex = currentProjectIndex) {
         displayProjectName(currentProject);
-        displayTodos(currentProject);
+        displayAllTodos(currentProject);
         expandButtonsListener();
         editTaskEventListener();
         removeTaskEventListener();
+        checkboxEventListener();
         currentProjectIndex = projectIndex;
     }
 
@@ -284,11 +295,53 @@ function dynamicButtonsEventListeners  (projectsHandler) {
         project.removeTodo(todoIndex);
     }
 
+    const checkboxEventListener = function () {
+        const checkboxButtons = document.querySelectorAll(`input[type="checkbox"]`);
+        checkboxButtons.forEach((checkbox) => {
+            checkbox.addEventListener("change", (event) => {
+                completeSwitch(event.target);
+            })
+        })
+    }
+
+    const completeSwitch = function (checkbox) {
+        const project = getCurrentProject();
+        const todo = project.getTodo(checkbox.dataset.index);
+        const todoDiv = document.querySelector(`.todo[data-index="${checkbox.dataset.index}"`);
+        if (todo.complete) {
+            todo.editTodo("complete", false);
+            todoDiv.classList.remove("completed-task");
+        }
+        else {
+            todo.complete = true;
+            todoDiv.classList.add("completed-task");
+        }
+    }
 
 
 
-
-    return {projectsEventListener, expandButtonsListener, getCurrentProject, editTaskEventListener, handleProjectSwitch, getCurrentTodoIndex, editProjectEventListener, getEditedProject, removeProjectEventListener, removeTaskEventListener}
+    return {projectsEventListener, expandButtonsListener, getCurrentProject, editTaskEventListener, handleProjectSwitch, getCurrentTodoIndex, editProjectEventListener, getEditedProject, removeProjectEventListener, removeTaskEventListener, checkboxEventListener}
     
 
+}
+
+
+
+function sortButtonsHandler (projectsHandler, clickHandler) {
+
+    const inboxHandler = (function () {
+        const inboxButton = document.querySelector(".inbox")
+        inboxButton.addEventListener("click", (event) => {
+            const tasks = projectsHandler.getAllUncompletedTasks();
+            clearTodos();
+            tasks.forEach((task) => {
+                const project = projectsHandler.getProject(task.projectIndex);
+                displayTodo(project, task, task.index);
+                clickHandler.expandButtonsListener();
+                clickHandler.editTaskEventListener();
+                clickHandler.removeTaskEventListener();
+                clickHandler.checkboxEventListener();
+            })
+        })
+    })();
 }

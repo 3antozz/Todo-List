@@ -14,11 +14,23 @@ function handleProjects () {
         project.index = length - 1;
     }
     const removeFromProjects = (index) => projects.splice(index, 1);
+    const getAllUncompletedTasks = () => {
+        const tasks = [];
+        projects.forEach((project, index) => {
+            project.todos.forEach((todo) => {
+                if (!(todo.complete)){
+                    todo.projectIndex = index;
+                    tasks.push(todo);
+                }
+            })
+        })
+        return tasks;
+    }
 
 
     addProject(defaultProject);
 
-    return {getAllProjects, addProject, removeFromProjects, getProject}
+    return {getAllProjects, addProject, removeFromProjects, getProject, getAllUncompletedTasks}
 }
 
 class Project {

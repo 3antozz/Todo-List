@@ -34,11 +34,15 @@ const displayProjectName = function (project) {
     projectName.textContent = project.name;
 }
 
-const displayAllProjectsNav = function (projects) {
+const clearProjectHeaders = function () {
     const projectsHeaders = document.querySelectorAll(".project-div");
     projectsHeaders.forEach((project) => {
         project.remove();
     })
+}
+
+const displayAllProjectsNav = function (projects) {
+    clearProjectHeaders();
     projects.forEach((project, index) => {
         displayNavProject(project.name, index);
     })
@@ -49,82 +53,96 @@ const removeProjectNav = function (index) {
     projectNavDiv.remove();
 }
 
-const displayTodos = function (project){
+const displayTodo = function (project, todo, index) {
     const todosDiv = document.querySelector(".todos");
+    const initialDiv = document.createElement("div");
+    initialDiv.classList.add("initial");
+
+
+    const todoDiv = document.createElement("div");
+    todoDiv.classList.add("todo");
+    todoDiv.dataset.index = index;
+
+    const leftDiv = document.createElement("div");
+    leftDiv.classList.add("left");
+
+    const checkboxDiv = document.createElement("div");
+    checkboxDiv.classList.add("checkbox");
+
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.dataset.index = index;
+    input.id = `todo-${index}`;
+
+    if (todo.complete){
+        input.checked = true;
+        todoDiv.classList.add("completed-task");
+    }
+
+    const label = document.createElement("label");
+    label.htmlFor = input.id;
+    label.textContent = todo.title;
+
+    const expandButton = document.createElement("button");
+    expandButton.classList.add("expand");
+    expandButton.textContent = "▼";
+    expandButton.dataset.index = index;
+
+    const editButton = document.createElement("button");
+    editButton.classList.add("edit");
+    editButton.textContent = "✍";
+    editButton.dataset.index = index;
+
+    const removeButton = document.createElement("button");
+    removeButton.classList.add("task-remove");
+    removeButton.textContent = "🗑";
+    removeButton.dataset.index = index;
+
+    const infoDiv = document.createElement("div");
+    infoDiv.classList.add("info");
+
+    const datePara = document.createElement("p");
+    datePara.classList.add("due-date");
+    if (todo.dueDate === "") {
+        todo.dueDate = "No Due Date";
+    }
+    if (isValid(todo.dueDate)) {
+        const formattedDate = format(new Date (todo.dueDate), "dd/MM/yyyy");
+        datePara.textContent = formattedDate;
+    }
+
+    datePara.textContent = todo.dueDate;
+
+    const rightDiv = document.createElement("div");
+    rightDiv.classList.add("right");
+
+    const priorityPara = document.createElement("p");
+    priorityPara.textContent = `#${project.name}`;
+
+    rightDiv.appendChild(priorityPara);
+    infoDiv.append(label, expandButton, editButton, removeButton, datePara);
+
+    checkboxDiv.append(input);
+
+    leftDiv.append(checkboxDiv, infoDiv);
+
+    initialDiv.append(leftDiv, rightDiv)
+
+    todoDiv.append(initialDiv);
+
+    todosDiv.append(todoDiv);
+
+}
+
+const clearTodos = function () {
     const todos = document.querySelectorAll(".todo");
     todos.forEach((todo) => todo.remove() );
+}
+
+const displayAllTodos = function (project){
+    clearTodos();
     project.todos.forEach((todo, index) => {
-        const initialDiv = document.createElement("div");
-        initialDiv.classList.add("initial");
-
-
-        const todoDiv = document.createElement("div");
-        todoDiv.classList.add("todo");
-        todoDiv.dataset.index = index;
-
-        const leftDiv = document.createElement("div");
-        leftDiv.classList.add("left");
-
-        const checkboxDiv = document.createElement("div");
-        checkboxDiv.classList.add("checkbox");
-
-        const input = document.createElement("input");
-        input.type = "checkbox";
-        input.dataset.index = index;
-        input.id = `todo-${index}`;
-
-        const label = document.createElement("label");
-        label.htmlFor = input.id;
-        label.textContent = todo.title;
-
-        const expandButton = document.createElement("button");
-        expandButton.classList.add("expand");
-        expandButton.textContent = "▼";
-        expandButton.dataset.index = index;
-
-        const editButton = document.createElement("button");
-        editButton.classList.add("edit");
-        editButton.textContent = "✍";
-        editButton.dataset.index = index;
-
-        const removeButton = document.createElement("button");
-        removeButton.classList.add("task-remove");
-        removeButton.textContent = "🗑";
-        removeButton.dataset.index = index;
-
-        const infoDiv = document.createElement("div");
-        infoDiv.classList.add("info");
-
-        const datePara = document.createElement("p");
-        datePara.classList.add("due-date");
-        if (todo.dueDate === "") {
-            todo.dueDate = "No Due Date";
-        }
-        if (isValid(todo.dueDate)) {
-            const formattedDate = format(new Date (todo.dueDate), "dd/MM/yyyy");
-            datePara.textContent = formattedDate;
-        }
-
-        datePara.textContent = todo.dueDate;
-
-        const rightDiv = document.createElement("div");
-        rightDiv.classList.add("right");
-
-        const priorityPara = document.createElement("p");
-        priorityPara.textContent = `#${project.name}`;
-
-        rightDiv.appendChild(priorityPara);
-        infoDiv.append(label, expandButton, editButton, removeButton, datePara);
-
-        checkboxDiv.append(input);
-
-        leftDiv.append(checkboxDiv, infoDiv);
-
-        initialDiv.append(leftDiv, rightDiv)
-
-        todoDiv.append(initialDiv);
-
-        todosDiv.append(todoDiv);
+        displayTodo(project, todo, index);
     });
 }
 
@@ -198,4 +216,4 @@ const hideTaskUI = function (addButton) {
 
 
 
-export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI};
+export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodo, displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos};
