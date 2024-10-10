@@ -1,24 +1,27 @@
 import "./styles.css";
 import {Project, Todo, handleProjects} from "./projects.js";
 import { format, isBefore, isTomorrow, isThisWeek, isThisMonth, isToday, compareAsc, compareDesc } from "date-fns";
-import { displayAllProjectsNav, displayProjectName, displayTodos, expandTodo, retractTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI } from "./DOMHandler.js";
+import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI } from "./DOMHandler.js";
 
 
 
 (function init (){
     const projectsHandler = handleProjects();
     const defaultProject = projectsHandler.getProject(0);
-    const clickHandler = dynamicEventsListener(projectsHandler);
-    staticEventListeners(projectsHandler, clickHandler);
+    const clickHandler = dynamicButtonsEventListeners(projectsHandler);
+    staticButtonsEventListeners(projectsHandler, clickHandler);
     displayAllProjectsNav(projectsHandler.getAllProjects());
     displayProjectName(defaultProject);
     displayTodos(defaultProject);
     clickHandler.expandButtonsListener();
-    clickHandler.projectsEventListener();
     clickHandler.editTaskEventListener();
+    clickHandler.projectsEventListener();
+    clickHandler.editProjectEventListener();
+    clickHandler.removeProjectEventListener();
+    clickHandler.removeTaskEventListener();
 })();
 
-function staticEventListeners (projectsHandler, clickHandler) {
+function staticButtonsEventListeners (projectsHandler, clickHandler) {
     const confirmProject = document.querySelector(".form-buttons button:first-child");
     const cancelProject = document.querySelector(".form-buttons :not(button:first-child)");
     const addButton = document.querySelector(".add-project");
@@ -30,6 +33,35 @@ function staticEventListeners (projectsHandler, clickHandler) {
     const dateInput = document.querySelector("#task-date");
     const radioButtons = document.querySelectorAll(`input[type="radio"]`);
     const addTaskButton = document.querySelector(".add-task");
+
+
+
+    const addProject = function (event) {
+        event.preventDefault();
+        const project = new Project(input.value);
+        projectsHandler.addProject(project);
+        displayAllProjectsNav(projectsHandler.getAllProjects());
+        hideProjectUI(addButton);
+        clickHandler.projectsEventListener();
+        clickHandler.handleProjectSwitch(project, project.index);
+        clickHandler.editProjectEventListener();
+        clickHandler.removeProjectEventListener();
+        input.value = "";
+    }
+
+    const editProject = function (event) {
+        event.preventDefault();
+        const project = clickHandler.getEditedProject();
+        project.editProject(input.value);
+        hideProjectUI(addButton);
+        displayAllProjectsNav(projectsHandler.getAllProjects());
+        clickHandler.projectsEventListener();
+        clickHandler.editProjectEventListener();
+        clickHandler.removeProjectEventListener();
+        if (project === clickHandler.getCurrentProject()) {
+            displayProjectName(project);
+        }
+    }
 
     const addTask = function (event) {
         let priorityValue;
@@ -46,6 +78,7 @@ function staticEventListeners (projectsHandler, clickHandler) {
         hideTaskUI(addTaskButton);
         clickHandler.expandButtonsListener(clickHandler.getCurrentProject());
         clickHandler.editTaskEventListener();
+        clickHandler.removeTaskEventListener();
     }
 
     const editTodo = function (event) {
@@ -67,12 +100,15 @@ function staticEventListeners (projectsHandler, clickHandler) {
         hideTaskUI(addTaskButton);
         clickHandler.expandButtonsListener(clickHandler.getCurrentProject());
         clickHandler.editTaskEventListener();
+        clickHandler.removeTaskEventListener();
     }
+
 
 
     const addProjectButtonHandler = (function () {
         addButton.addEventListener("click", () => {
             showProjectUI(addButton);
+            input.value = "";
         })
     })();
 
@@ -88,15 +124,15 @@ function staticEventListeners (projectsHandler, clickHandler) {
 
     const projectFormButtonsHandler = (function () {
         confirmProject.addEventListener("click", (event) => {
-            if (input.checkValidity()){
-                event.preventDefault();
-                const project = new Project(input.value);
-                projectsHandler.addProject(project);
-                displayAllProjectsNav(projectsHandler.getAllProjects());
-                hideProjectUI(addButton);
-                clickHandler.projectsEventListener();
-                clickHandler.handleProjectSwitch(project, project.index);
-                input.value = "";
+            if (!(confirmProject.classList.contains("confirm-edit-project"))){
+                if (input.checkValidity()){
+                    addProject(event);
+                }
+            }
+            else {
+                if (input.checkValidity()) {
+                    editProject(event);
+                }
             }
         });
         cancelProject.addEventListener("click", () => {
@@ -124,13 +160,70 @@ function staticEventListeners (projectsHandler, clickHandler) {
 
 };
 
-function dynamicEventsListener  (projectsHandler) {
+function dynamicButtonsEventListeners  (projectsHandler) {
     const addTaskButton = document.querySelector(".add-task");
     let currentProjectIndex = 0;
     let currentTodoIndex;
+    let editButtonIndex;
 
     const getCurrentProject = () => projectsHandler.getProject(currentProjectIndex);
     const getCurrentTodoIndex = () => currentTodoIndex;
+    const getEditedProject = () => projectsHandler.getProject(editButtonIndex);
+
+
+
+    const projectsEventListener = function () {
+        const projectHeaders = document.querySelectorAll(".project-nav");
+        projectHeaders.forEach((project) => {
+            project.addEventListener("click", (event) => {
+                currentProjectIndex = event.target.dataset.index;
+                handleProjectSwitch();
+            })
+        })
+    }
+
+    const handleProjectSwitch = function (currentProject = projectsHandler.getProject(currentProjectIndex), projectIndex = currentProjectIndex) {
+        displayProjectName(currentProject);
+        displayTodos(currentProject);
+        expandButtonsListener();
+        editTaskEventListener();
+        removeTaskEventListener();
+        currentProjectIndex = projectIndex;
+    }
+
+    const editProjectEventListener = function () {
+        const editButtons = document.querySelectorAll(".project-edit-button");
+        const addButton = document.querySelector(".add-project");
+        editButtons.forEach((button) => {
+            button.addEventListener("click", (event) => {
+                showProjectUI(addButton, true);
+                editProject(event.target);
+                editButtonIndex = event.target.dataset.index;
+            })
+        })
+    }
+
+    const editProject = function (button) {
+        const project = projectsHandler.getProject(button.dataset.index);
+        const projectTitle = document.querySelector("#proj-name");
+        projectTitle.value = project.name;
+    }
+
+    const removeProjectEventListener = function () {
+        const deleteButtons = document.querySelectorAll(".project-remove-button");
+        deleteButtons.forEach((button) => {
+            button.addEventListener("click", (event) => {
+                removeProject(event.target);
+            })
+        })
+    }
+
+    const removeProject = function (button) {
+        removeProjectNav(button.dataset.index);
+        projectsHandler.removeFromProjects(button.dataset.index);
+        currentProjectIndex = button.dataset.index - 1;
+        handleProjectSwitch();
+    }
     
     const handleExpandButton = function (button) {
         let todoIndex = button.dataset.index;
@@ -153,23 +246,6 @@ function dynamicEventsListener  (projectsHandler) {
     });
     }
 
-    const projectsEventListener = function () {
-        const projectHeaders = document.querySelectorAll(".project-nav");
-        projectHeaders.forEach((project) => {
-            project.addEventListener("click", (event) => {
-                currentProjectIndex = event.target.dataset.index;
-                handleProjectSwitch();
-            })
-        })
-    }
-    
-    const handleProjectSwitch = function (currentProject = projectsHandler.getProject(currentProjectIndex), projectIndex = currentProjectIndex) {
-        displayProjectName(currentProject);
-        displayTodos(currentProject);
-        expandButtonsListener();
-        editTaskEventListener();
-        currentProjectIndex = projectIndex;
-    }
 
     const editTaskEventListener = function () {
         const editButtons = document.querySelectorAll(".edit");
@@ -192,9 +268,27 @@ function dynamicEventsListener  (projectsHandler) {
         dateInput.value = todo.dueDate;
     }
 
+    const removeTaskEventListener = function () {
+        const removeButtons = document.querySelectorAll(".task-remove");
+        removeButtons.forEach ((button) => {
+            button.addEventListener("click", (event) => {
+                removeTask(event.target)
+            })
+        })
+    }
+
+    const removeTask = function (button) {
+        const todoIndex = button.dataset.index;
+        removeTodo(todoIndex);
+        const project = projectsHandler.getProject(currentProjectIndex);
+        project.removeTodo(todoIndex);
+    }
 
 
-    return {projectsEventListener, expandButtonsListener, getCurrentProject, editTaskEventListener, handleProjectSwitch, getCurrentTodoIndex}
+
+
+
+    return {projectsEventListener, expandButtonsListener, getCurrentProject, editTaskEventListener, handleProjectSwitch, getCurrentTodoIndex, editProjectEventListener, getEditedProject, removeProjectEventListener, removeTaskEventListener}
     
 
 }

@@ -63,6 +63,18 @@
     background-color: orange;
   }
 
+  nav button {
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    background-color: rgb(217, 217, 201);
+    font-size: 1.3rem;
+    border: none;
+  }
+
+  nav button:hover {
+    background-color: orange;
+  }
+
   .projects h3:first-child {
     text-align: center;
   }
@@ -73,24 +85,47 @@
   }
 
   .projects {
-    padding: 2rem;
     display: flex;
     flex-direction: column;
   }
 
   .add-project {
     order: 2;
-    text-align: left;
+    text-align: center;
     background-color: rgba(255, 255, 255, 0);
     border: none;
     font-size: 1.2rem;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
   }
 
   .add-project-ui {
     order: 1;
     display: none;
+    padding: 1rem;
+    flex-direction: column;
+    align-items: center;
   }
+
+  .project-div {
+    display: flex;
+    justify-content: center;
+  }
+
+  .project-nav {
+    flex: 1;
+    font-weight: bold;
+  }
+
+  .project-edit-button {
+    font-size: 1.5rem;
+  }
+
+  .project-remove-button {
+    font-size: 1rem;
+  }
+
+
 
   .add-project:hover {
     background-color: orange;
@@ -133,6 +168,19 @@
     font-size: 1.3rem;
     background-color: rgba(128, 128, 128, 0);
     border: none;
+  }
+  
+  .task-remove {
+    padding: 0;
+    line-height: normal;
+    margin-left: 1rem;
+    font-size: 1.3rem;
+    background-color: rgba(128, 128, 128, 0);
+    border: none;
+  }
+
+  .task-remove:hover {
+    scale: 1.5;
   }
 
   .expand:hover {
@@ -204,6 +252,10 @@
 
   .detail {
     font-size: 1.1rem;
+  }
+
+  .checkbox input {
+    margin-top: 1rem;
   }
 
 

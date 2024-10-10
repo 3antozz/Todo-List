@@ -3,11 +3,30 @@ import {format, isValid} from "date-fns";
 
 const displayNavProject = function (name, index) {
     const projects = document.querySelector(".projects");
+
+    const projectNavDiv = document.createElement("div");
+    projectNavDiv.dataset.index = index;
+    projectNavDiv.classList.add("project-div");
+
     const header = document.createElement("button");
     header.classList.add("project-nav")
     header.textContent = name;
     header.dataset.index = index;
-    projects.appendChild(header);
+
+    const editProject = document.createElement("button");
+    editProject.classList.add("project-edit-button");
+    editProject.textContent = "✍";
+    editProject.dataset.index = index;
+
+    const removeProject = document.createElement("button");
+    removeProject.classList.add("project-remove-button");
+    removeProject.textContent = "🗑";
+    removeProject.dataset.index = index;
+
+    projectNavDiv.append(header, editProject, removeProject);
+
+
+    projects.appendChild(projectNavDiv);
 }
 
 const displayProjectName = function (project) {
@@ -16,13 +35,18 @@ const displayProjectName = function (project) {
 }
 
 const displayAllProjectsNav = function (projects) {
-    const projectsHeaders = document.querySelectorAll(".project-nav");
+    const projectsHeaders = document.querySelectorAll(".project-div");
     projectsHeaders.forEach((project) => {
         project.remove();
     })
     projects.forEach((project, index) => {
         displayNavProject(project.name, index);
     })
+}
+
+const removeProjectNav = function (index) {
+    const projectNavDiv = document.querySelector(`.project-div[data-index="${index}"`);
+    projectNavDiv.remove();
 }
 
 const displayTodos = function (project){
@@ -46,10 +70,8 @@ const displayTodos = function (project){
 
         const input = document.createElement("input");
         input.type = "checkbox";
+        input.dataset.index = index;
         input.id = `todo-${index}`;
-        if (todo.complete) {
-            input.checked = true;
-        }
 
         const label = document.createElement("label");
         label.htmlFor = input.id;
@@ -64,6 +86,11 @@ const displayTodos = function (project){
         editButton.classList.add("edit");
         editButton.textContent = "✍";
         editButton.dataset.index = index;
+
+        const removeButton = document.createElement("button");
+        removeButton.classList.add("task-remove");
+        removeButton.textContent = "🗑";
+        removeButton.dataset.index = index;
 
         const infoDiv = document.createElement("div");
         infoDiv.classList.add("info");
@@ -87,7 +114,7 @@ const displayTodos = function (project){
         priorityPara.textContent = `#${project.name}`;
 
         rightDiv.appendChild(priorityPara);
-        infoDiv.append(label, expandButton, editButton, datePara);
+        infoDiv.append(label, expandButton, editButton, removeButton, datePara);
 
         checkboxDiv.append(input);
 
@@ -98,11 +125,6 @@ const displayTodos = function (project){
         todoDiv.append(initialDiv);
 
         todosDiv.append(todoDiv);
-
-
-
-
-
     });
 }
 
@@ -133,16 +155,27 @@ const retractTodo = function (todoDiv, button) {
     todoDiv.classList.remove("expanded");
 }
 
-const showProjectUI = function (addButton) {
+const removeTodo = function (index) {
+    const todoDiv = document.querySelector(`.todo[data-index="${index}"`);
+    todoDiv.remove();
+}
+
+const showProjectUI = function (addButton, edit = false) {
+    if (edit){
+        const confirmProject = document.querySelector(".confirm-project");
+        confirmProject.classList.add("confirm-edit-project");
+    }
     const addUi = document.querySelector(".add-project-ui");
     addButton.style.display = "none";
-    addUi.style.display = "block";
+    addUi.style.display = "flex";
 }
 
 const hideProjectUI = function (addButton) {
+    const confirmProject = document.querySelector(".confirm-project");
     const addUi = document.querySelector(".add-project-ui");
     addButton.style.display = "block";
     addUi.style.display = "none";
+    confirmProject.classList.remove("confirm-edit-project");
 }
 
 const showTaskUI = function (addButton, edit = false) {
@@ -165,4 +198,4 @@ const hideTaskUI = function (addButton) {
 
 
 
-export {displayNavProject, displayProjectName, displayAllProjectsNav, displayTodos, expandTodo, retractTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI};
+export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI};

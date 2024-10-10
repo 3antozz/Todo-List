@@ -13,11 +13,12 @@ function handleProjects () {
         length = projects.push(project);
         project.index = length - 1;
     }
-    const removeProject = (index) => projects.splice(index, 1);
+    const removeFromProjects = (index) => projects.splice(index, 1);
+
+
     addProject(defaultProject);
 
-
-    return {getAllProjects, addProject, removeProject, getProject}
+    return {getAllProjects, addProject, removeFromProjects, getProject}
 }
 
 class Project {
@@ -38,6 +39,10 @@ class Project {
 
     removeTodo (index) {
         this.todos.splice(index, 1);
+    }
+
+    editProject (title) {
+        this.name = title;
     }
 }
 
