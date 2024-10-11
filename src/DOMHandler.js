@@ -108,6 +108,16 @@ const displayTodo = function (project, todo, index, addRightDiv = true ) {
     removeButton.dataset.index = index;
     removeButton.dataset.projectIndex = todo.projectIndex;
 
+    const important = document.createElement("button");
+    important.classList.add("important-button");
+    important.textContent = "☆";
+    important.dataset.index = index;
+    important.dataset.projectIndex = todo.projectIndex;
+
+    if (todo.important) {
+        important.style.backgroundColor = "pink";
+    }
+
     const infoDiv = document.createElement("div");
     infoDiv.classList.add("info");
 
@@ -138,7 +148,7 @@ const displayTodo = function (project, todo, index, addRightDiv = true ) {
     }
 
     rightDiv.appendChild(priorityPara);
-    infoDiv.append(label, expandButton, editButton, removeButton, datePara);
+    infoDiv.append(label, expandButton, editButton, removeButton, important, datePara);
 
     checkboxDiv.append(input);
 
@@ -196,6 +206,14 @@ const removeTodo = function (index) {
     todoDiv.remove();
 }
 
+const markImportant = function (starDiv) {
+    starDiv.style.backgroundColor = "pink";
+}
+
+const unmarkImportant = function (starDiv) {
+    starDiv.style.backgroundColor = "rgba(128, 128, 128, 0)";
+}
+
 const showProjectUI = function (addButton, edit = false) {
     if (edit){
         const confirmProject = document.querySelector(".confirm-project");
@@ -244,4 +262,4 @@ const showAddTaskButton = function () {
 
 
 
-export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodo, displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton};
+export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodo, displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant};

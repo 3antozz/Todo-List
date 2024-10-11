@@ -26,6 +26,17 @@ function handleProjects () {
         return tasks;
     }
 
+    const getAllImportantTasks = () => {
+        const uncompletedTasks = getAllUncompletedTasks();
+        const tasks = [];
+        uncompletedTasks.forEach((task) => {
+            if(task.important) {
+                tasks.push(task);
+            }
+        })
+        return tasks;
+    }
+
     const getAllCompletedTasks = () => {
         const tasks = [];
         projects.forEach((project) => {
@@ -41,7 +52,7 @@ function handleProjects () {
 
     addProject(defaultProject);
 
-    return {getAllProjects, addProject, removeFromProjects, getProject, getAllUncompletedTasks, getAllCompletedTasks}
+    return {getAllProjects, addProject, removeFromProjects, getProject, getAllUncompletedTasks, getAllCompletedTasks, getAllImportantTasks}
 }
 
 class Project {
@@ -78,6 +89,7 @@ class Todo {
         this.dueDate = dueDate;
         this.priority = priority;
         this.complete = false;
+        this.important = false;
     }
 
     getTodo () { return this }

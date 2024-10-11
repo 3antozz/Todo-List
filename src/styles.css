@@ -180,6 +180,15 @@
     border: none;
   }
 
+  .important-button {
+    padding: 0;
+    line-height: normal;
+    margin-left: 1rem;
+    font-size: 1.3rem;
+    background-color: rgba(128, 128, 128, 0);
+    border: none;
+  }
+
   .task-remove:hover {
     scale: 1.5;
   }
@@ -187,6 +196,12 @@
   .expand:hover {
     scale: 1.5;
   }
+
+  .important-button:hover {
+    scale: 1.5;
+  }
+
+  
 
   .edit {
     padding: 0;
@@ -263,10 +278,6 @@
   .checkbox input {
     margin-top: 1rem;
   }
-
-
-
-
 
 
   footer {
