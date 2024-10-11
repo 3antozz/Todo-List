@@ -1,7 +1,7 @@
 import "./styles.css";
 import {Project, Todo, handleProjects} from "./projects.js";
 import { format, isBefore, isTomorrow, isThisWeek, isThisMonth, isToday, compareAsc, compareDesc } from "date-fns";
-import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodo,  displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos } from "./DOMHandler.js";
+import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodo,  displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton } from "./DOMHandler.js";
 
 
 
@@ -9,7 +9,8 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
     const projectsHandler = handleProjects();
     const defaultProject = projectsHandler.getProject(0);
     const clickHandler = dynamicButtonsEventListeners(projectsHandler);
-    sortProjectsButtonsHandler(projectsHandler, clickHandler);
+    const dates = sortDates(projectsHandler);
+    sortProjectsButtonsHandler(projectsHandler, clickHandler, dates);
     staticButtonsEventListeners(projectsHandler, clickHandler);
     displayAllProjectsNav(projectsHandler.getAllProjects());
     displayProjectName(defaultProject);
@@ -196,6 +197,7 @@ function dynamicButtonsEventListeners  (projectsHandler) {
     const handleProjectSwitch = function (currentProject = projectsHandler.getProject(currentProjectIndex), projectIndex = currentProjectIndex) {
         displayProjectName(currentProject);
         displayAllTodos(currentProject);
+        showAddTaskButton();
         expandButtonsListener();
         editTaskEventListener();
         removeTaskEventListener();
@@ -233,8 +235,15 @@ function dynamicButtonsEventListeners  (projectsHandler) {
     const removeProject = function (button) {
         removeProjectNav(button.dataset.index);
         projectsHandler.removeFromProjects(button.dataset.index);
-        currentProjectIndex = button.dataset.index - 1;
-        handleProjectSwitch();
+        if (projectsHandler.getAllProjects().length === 0) {
+            clearTodos();
+            setProjectHeaderName("Please Add a New Project!");
+            hideAddTaskButton();
+        }
+        else {
+            currentProjectIndex = button.dataset.index - 1;
+            handleProjectSwitch();
+        }
     }
     
     const handleExpandButton = function (button) {
@@ -328,7 +337,7 @@ function dynamicButtonsEventListeners  (projectsHandler) {
 
 
 
-function sortProjectsButtonsHandler (projectsHandler, clickHandler) {
+function sortProjectsButtonsHandler (projectsHandler, clickHandler, sortDates) {
 
     const inboxHandler = (function () {
         const inboxButton = document.querySelector(".inbox")
@@ -343,6 +352,55 @@ function sortProjectsButtonsHandler (projectsHandler, clickHandler) {
             clickHandler.editTaskEventListener();
             clickHandler.removeTaskEventListener();
             clickHandler.checkboxEventListener();
+            if (!(projectsHandler.getAllProjects().length === 0)) {
+                showAddTaskButton();
+                setProjectHeaderName("Inbox");
+            }
+        })
+    })();
+
+    const TodayHandler = (function () {
+        const todayButton = document.querySelector(".today");
+        todayButton.addEventListener("click", (event) => {
+            const todayTasks = sortDates.getTodayTodos();
+            clearTodos();
+            todayTasks.forEach((task) => {
+                const project = projectsHandler.getProject(task.projectIndex);
+                displayTodo(project, task, task.index);
+            })
+            clickHandler.expandButtonsListener();
+            clickHandler.editTaskEventListener();
+            clickHandler.removeTaskEventListener();
+            clickHandler.checkboxEventListener();
+            if (!(projectsHandler.getAllProjects().length === 0)) {
+                showAddTaskButton();
+                setProjectHeaderName("Today");
+            }
         })
     })();
 }
+
+
+function sortDates (projectsHandler) {
+
+    const getTodayTodos = function () {
+        const AllTasks = projectsHandler.getAllUncompletedTasks();
+
+        const TodayTasks = AllTasks.filter((task) => {
+            return isToday(task.dueDate);
+        })
+
+        return TodayTasks;
+    }
+
+
+    return {getTodayTodos}
+
+
+}
+
+
+
+
+
+

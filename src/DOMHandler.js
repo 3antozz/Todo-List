@@ -34,6 +34,11 @@ const displayProjectName = function (project) {
     projectName.textContent = project.name;
 }
 
+const setProjectHeaderName = function (name) {
+    const projectName = document.querySelector(".project-name");
+    projectName.textContent = name;
+}
+
 const clearProjectHeaders = function () {
     const projectsHeaders = document.querySelectorAll(".project-div");
     projectsHeaders.forEach((project) => {
@@ -219,6 +224,16 @@ const hideTaskUI = function (addButton) {
     addUi.style.display = "none";
 }
 
+const hideAddTaskButton = function () {
+    const button = document.querySelector(".add-task");
+    button.style.display = "none";
+}
+
+const showAddTaskButton = function () {
+    const button = document.querySelector(".add-task");
+    button.style.display = "block";
+}
 
 
-export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodo, displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos};
+
+export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodo, displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton};
