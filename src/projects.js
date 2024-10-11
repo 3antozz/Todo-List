@@ -4,8 +4,8 @@ function handleProjects () {
     let defaultTodo1 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-22", "High");
     let defaultTodo2 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-28", "High");
 
-    defaultProject.addTodo(defaultTodo1);
-    defaultProject.addTodo(defaultTodo2);
+    defaultProject.addTodo(defaultTodo1, 0);
+    defaultProject.addTodo(defaultTodo2, 0);
 
     const getAllProjects = () => projects;
     const getProject = (index) => projects[index];
@@ -16,10 +16,9 @@ function handleProjects () {
     const removeFromProjects = (index) => projects.splice(index, 1);
     const getAllUncompletedTasks = () => {
         const tasks = [];
-        projects.forEach((project, index) => {
+        projects.forEach((project) => {
             project.todos.forEach((todo) => {
                 if (!(todo.complete)){
-                    todo.projectIndex = index;
                     tasks.push(todo);
                 }
             })
@@ -44,9 +43,10 @@ class Project {
     getAllTodos () { return this.todos; }
     getTodo (index) { return this.todos[index]; }
 
-    addTodo (todo) { 
+    addTodo (todo, index) { 
         length = this.todos.push(todo);
         todo.index = length-1;
+        todo.projectIndex = index;
     }
 
     removeTodo (index) {

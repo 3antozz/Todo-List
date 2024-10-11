@@ -9,7 +9,7 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
     const projectsHandler = handleProjects();
     const defaultProject = projectsHandler.getProject(0);
     const clickHandler = dynamicButtonsEventListeners(projectsHandler);
-    sortButtonsHandler(projectsHandler, clickHandler);
+    sortProjectsButtonsHandler(projectsHandler, clickHandler);
     staticButtonsEventListeners(projectsHandler, clickHandler);
     displayAllProjectsNav(projectsHandler.getAllProjects());
     displayProjectName(defaultProject);
@@ -75,7 +75,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler) {
         const currentProject = clickHandler.getCurrentProject();
         event.preventDefault();
         const todo = new Todo(titleInput.value, descInput.value, dateInput.value, priorityValue);
-        currentProject.addTodo(todo);
+        currentProject.addTodo(todo, clickHandler.getCurrentProjectIndex());
         displayAllTodos(currentProject);
         hideTaskUI(addTaskButton);
         clickHandler.expandButtonsListener(clickHandler.getCurrentProject());
@@ -176,6 +176,7 @@ function dynamicButtonsEventListeners  (projectsHandler) {
     let currentTodoIndex;
     let editButtonIndex;
 
+    const getCurrentProjectIndex = () => currentProjectIndex;
     const getCurrentProject = () => projectsHandler.getProject(currentProjectIndex);
     const getCurrentTodoIndex = () => currentTodoIndex;
     const getEditedProject = () => projectsHandler.getProject(editButtonIndex);
@@ -238,7 +239,7 @@ function dynamicButtonsEventListeners  (projectsHandler) {
     
     const handleExpandButton = function (button) {
         let todoIndex = button.dataset.index;
-        const currentProject = projectsHandler.getProject(currentProjectIndex);
+        const currentProject = projectsHandler.getProject(button.dataset.projectIndex);
         const todoDiv = document.querySelector(`.todo[data-index="${button.dataset.index}"]`)
         if (todoDiv.classList.contains("expanded")){
             retractTodo(todoDiv, button);
@@ -291,13 +292,13 @@ function dynamicButtonsEventListeners  (projectsHandler) {
     const removeTask = function (button) {
         const todoIndex = button.dataset.index;
         removeTodo(todoIndex);
-        const project = projectsHandler.getProject(currentProjectIndex);
+        const project = projectsHandler.getProject(button.dataset.projectIndex);
         project.removeTodo(todoIndex);
     }
 
     const checkboxEventListener = function () {
         const checkboxButtons = document.querySelectorAll(`input[type="checkbox"]`);
-        checkboxButtons.forEach((checkbox) => {
+        checkboxButtons.forEach((checkbox, index) => {
             checkbox.addEventListener("change", (event) => {
                 completeSwitch(event.target);
             })
@@ -305,29 +306,29 @@ function dynamicButtonsEventListeners  (projectsHandler) {
     }
 
     const completeSwitch = function (checkbox) {
-        const project = getCurrentProject();
+        const project = projectsHandler.getProject(checkbox.dataset.projectIndex);
         const todo = project.getTodo(checkbox.dataset.index);
-        const todoDiv = document.querySelector(`.todo[data-index="${checkbox.dataset.index}"`);
+        const todoDiv = document.querySelector(`.todo[data-project-index="${checkbox.dataset.projectIndex}"][data-index="${checkbox.dataset.index}"]`);
         if (todo.complete) {
             todo.editTodo("complete", false);
             todoDiv.classList.remove("completed-task");
         }
         else {
-            todo.complete = true;
+            todo.editTodo("complete", true);
             todoDiv.classList.add("completed-task");
         }
     }
 
 
 
-    return {projectsEventListener, expandButtonsListener, getCurrentProject, editTaskEventListener, handleProjectSwitch, getCurrentTodoIndex, editProjectEventListener, getEditedProject, removeProjectEventListener, removeTaskEventListener, checkboxEventListener}
+    return {projectsEventListener, expandButtonsListener, getCurrentProject,  getCurrentProjectIndex, editTaskEventListener, handleProjectSwitch, getCurrentTodoIndex, editProjectEventListener, getEditedProject, removeProjectEventListener, removeTaskEventListener, checkboxEventListener}
     
 
 }
 
 
 
-function sortButtonsHandler (projectsHandler, clickHandler) {
+function sortProjectsButtonsHandler (projectsHandler, clickHandler) {
 
     const inboxHandler = (function () {
         const inboxButton = document.querySelector(".inbox")
@@ -337,11 +338,11 @@ function sortButtonsHandler (projectsHandler, clickHandler) {
             tasks.forEach((task) => {
                 const project = projectsHandler.getProject(task.projectIndex);
                 displayTodo(project, task, task.index);
-                clickHandler.expandButtonsListener();
-                clickHandler.editTaskEventListener();
-                clickHandler.removeTaskEventListener();
-                clickHandler.checkboxEventListener();
             })
+            clickHandler.expandButtonsListener();
+            clickHandler.editTaskEventListener();
+            clickHandler.removeTaskEventListener();
+            clickHandler.checkboxEventListener();
         })
     })();
 }

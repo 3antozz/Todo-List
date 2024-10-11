@@ -62,6 +62,7 @@ const displayTodo = function (project, todo, index) {
     const todoDiv = document.createElement("div");
     todoDiv.classList.add("todo");
     todoDiv.dataset.index = index;
+    todoDiv.dataset.projectIndex = todo.projectIndex;
 
     const leftDiv = document.createElement("div");
     leftDiv.classList.add("left");
@@ -72,6 +73,7 @@ const displayTodo = function (project, todo, index) {
     const input = document.createElement("input");
     input.type = "checkbox";
     input.dataset.index = index;
+    input.dataset.projectIndex = todo.projectIndex;
     input.id = `todo-${index}`;
 
     if (todo.complete){
@@ -87,16 +89,19 @@ const displayTodo = function (project, todo, index) {
     expandButton.classList.add("expand");
     expandButton.textContent = "▼";
     expandButton.dataset.index = index;
+    expandButton.dataset.projectIndex = todo.projectIndex;
 
     const editButton = document.createElement("button");
     editButton.classList.add("edit");
     editButton.textContent = "✍";
     editButton.dataset.index = index;
+    editButton.dataset.projectIndex = todo.projectIndex;
 
     const removeButton = document.createElement("button");
     removeButton.classList.add("task-remove");
     removeButton.textContent = "🗑";
     removeButton.dataset.index = index;
+    removeButton.dataset.projectIndex = todo.projectIndex;
 
     const infoDiv = document.createElement("div");
     infoDiv.classList.add("info");
