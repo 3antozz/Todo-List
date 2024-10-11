@@ -1,6 +1,6 @@
 import "./styles.css";
 import {Project, Todo, handleProjects} from "./projects.js";
-import { format, isBefore, isTomorrow, isThisWeek, isThisMonth, isToday, compareAsc, compareDesc } from "date-fns";
+import { isBefore, isTomorrow, isThisWeek, isToday, compareAsc, compareDesc } from "date-fns";
 import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodo,  displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton } from "./DOMHandler.js";
 
 
@@ -21,7 +21,7 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
     clickHandler.editProjectEventListener();
     clickHandler.removeProjectEventListener();
     clickHandler.removeTaskEventListener();
-    clickHandler.checkboxEventListener()
+    clickHandler.checkboxEventListener();
 })();
 
 function staticButtonsEventListeners (projectsHandler, clickHandler) {
@@ -91,7 +91,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler) {
         const todo = new Todo(titleInput.value, descInput.value, dateInput.value, priorityValue);
         currentProject.addTodo(todo, clickHandler.getCurrentProjectIndex());
         displayAllTodos(currentProject);
-        hideTaskUI(addTaskButton);
+        hideTaskUI();
         createTaskButtonsEventListeners();
     }
 
@@ -111,7 +111,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler) {
         Todo.editTodo("dueDate", dateInput.value);
         Todo.editTodo("priority", priorityValue);
         displayAllTodos(currentProject);
-        hideTaskUI(addTaskButton);
+        hideTaskUI();
         createTaskButtonsEventListeners();
     }
 
@@ -130,7 +130,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler) {
             descInput.value = "";
             dateInput.value = "";
             radioButtons[1].checked = true;
-            showTaskUI(addTaskButton);
+            showTaskUI();
         })
     })();
 
@@ -166,7 +166,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler) {
             }
         });
         cancelTask.addEventListener("click", (event) => {
-            hideTaskUI(addTaskButton);
+            hideTaskUI();
         })
     })()
 
@@ -209,6 +209,7 @@ function dynamicButtonsEventListeners  (projectsHandler) {
         editTaskEventListener();
         removeTaskEventListener();
         checkboxEventListener();
+        hideTaskUI();
         currentProjectIndex = projectIndex;
     }
 
@@ -279,7 +280,7 @@ function dynamicButtonsEventListeners  (projectsHandler) {
         const editButtons = document.querySelectorAll(".edit");
         editButtons.forEach((button) => {
             button.addEventListener("click", (event) => {
-                showTaskUI(addTaskButton, true);
+                showTaskUI(true);
                 editTask(event.target);
             })
         })
@@ -287,7 +288,7 @@ function dynamicButtonsEventListeners  (projectsHandler) {
 
     const editTask = function (button) {
         currentTodoIndex = button.dataset.index;
-        const todo = getCurrentProject().getTodo(button.dataset.index);
+        const todo = projectsHandler.getProject(button.dataset.projectIndex).getTodo(button.dataset.index);
         const titleInput = document.querySelector("#task-name");
         const descInput = document.querySelector("#task-desc");
         const dateInput = document.querySelector("#task-date");
@@ -356,6 +357,7 @@ function sortProjectsButtonsHandler (projectsHandler, clickHandler, sortDates) {
         clickHandler.editTaskEventListener();
         clickHandler.removeTaskEventListener();
         clickHandler.checkboxEventListener();
+        hideTaskUI();
     }
 
     const inboxHandler = (function () {
