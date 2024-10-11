@@ -58,7 +58,7 @@ const removeProjectNav = function (index) {
     projectNavDiv.remove();
 }
 
-const displayTodo = function (project, todo, index) {
+const displayTodo = function (project, todo, index, addRightDiv = true ) {
     const todosDiv = document.querySelector(".todos");
     const initialDiv = document.createElement("div");
     initialDiv.classList.add("initial");
@@ -116,18 +116,26 @@ const displayTodo = function (project, todo, index) {
     if (todo.dueDate === "") {
         todo.dueDate = "No Due Date";
     }
-    if (isValid(todo.dueDate)) {
+
+
+    if (isValid(new Date(todo.dueDate))) {
         const formattedDate = format(new Date (todo.dueDate), "dd/MM/yyyy");
         datePara.textContent = formattedDate;
     }
 
-    datePara.textContent = todo.dueDate;
+    else {
+        datePara.textContent = todo.dueDate;
+    }
 
     const rightDiv = document.createElement("div");
     rightDiv.classList.add("right");
 
     const priorityPara = document.createElement("p");
     priorityPara.textContent = `#${project.name}`;
+
+    if (!addRightDiv) {
+        priorityPara.style.display = "none";
+    }
 
     rightDiv.appendChild(priorityPara);
     infoDiv.append(label, expandButton, editButton, removeButton, datePara);
@@ -152,7 +160,7 @@ const clearTodos = function () {
 const displayAllTodos = function (project){
     clearTodos();
     project.todos.forEach((todo, index) => {
-        displayTodo(project, todo, index);
+        displayTodo(project, todo, index, false);
     });
 }
 
@@ -206,21 +214,21 @@ const hideProjectUI = function (addButton) {
     confirmProject.classList.remove("confirm-edit-project");
 }
 
-const showTaskUI = function (addButton, edit = false) {
+const showTaskUI = function (edit = false) {
     if (edit) {
         const confirmTask = document.querySelector(".confirm");
         confirmTask.classList.add("confirm-edit");
     }
     const addUi = document.querySelector(".add-task-ui");
-    addButton.style.display = "none";
+    hideAddTaskButton();
     addUi.style.display = "block";
 }
 
-const hideTaskUI = function (addButton) {
+const hideTaskUI = function () {
     const confirmTask = document.querySelector(".confirm");
     confirmTask.classList.remove("confirm-edit");
     const addUi = document.querySelector(".add-task-ui");
-    addButton.style.display = "block";
+    showAddTaskButton();
     addUi.style.display = "none";
 }
 
