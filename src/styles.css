@@ -72,6 +72,33 @@
     background-color: orange;
   }
 
+  .top-nav {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .top-nav button {
+    margin-right: 10rem;
+    padding: 0.5rem 3rem;
+    font-weight: bold;
+    border-radius: 10px;
+    border: none;
+  }
+
+  .top-nav button:hover {
+    scale: 1.05;
+  }
+
+  .top-nav button:active {
+    background-color: pink;
+  }
+
+  .project-name {
+    flex: 1;
+  }
+
+
   .projects h3:first-child {
     text-align: center;
   }

@@ -1,4 +1,3 @@
-import {Project, Todo, handleProjects} from "./projects.js";
 import {format, isValid} from "date-fns";
 
 const displayNavProject = function (name, index) {
@@ -214,6 +213,20 @@ const unmarkImportant = function (starDiv) {
     starDiv.style.backgroundColor = "rgba(128, 128, 128, 0)";
 }
 
+const createSortButton = function () {
+    const topDiv = document.querySelector(".top-nav");
+    const button = document.createElement("button");
+    button.classList.add("sort-button");
+    button.textContent = "Sort by Date (Ascending)";
+
+    topDiv.appendChild(button);
+}
+
+const clearSortButton = function () {
+    const sortButton = document.querySelector(".sort-button");
+    sortButton.remove();
+}
+
 const showProjectUI = function (addButton, edit = false) {
     if (edit){
         const confirmProject = document.querySelector(".confirm-project");
@@ -262,4 +275,4 @@ const showAddTaskButton = function () {
 
 
 
-export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodo, displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant};
+export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodo, displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton};
