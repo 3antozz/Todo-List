@@ -1,8 +1,7 @@
 import "./styles.css";
 import {Project, Todo, handleProjects} from "./projects.js";
 import {isTomorrow, isThisWeek, isToday, compareAsc } from "date-fns";
-import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodo,  displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton } from "./DOMHandler.js";
-
+import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodo,  displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton, editTask } from "./DOMHandler.js";
 
 
 (function init (){
@@ -25,6 +24,12 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
     clickHandler.importantTaskEventListener()
     createSortButton();
     clickHandler.sortButtonEventListener(defaultProject.getAllTodos(), dates.sortAscending(defaultProject.getAllTodos()), false);
+
+
+
+    document.addEventListener("click", () => {
+        console.log(projectsHandler.getAllProjects());
+    });
 })();
 
 function staticButtonsEventListeners (projectsHandler, clickHandler, dates) {
@@ -42,7 +47,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates) {
 
 
     const createTaskButtonsEventListeners = function () {
-        clickHandler.expandButtonsListener(clickHandler.getCurrentProject());
+        clickHandler.expandButtonsListener();
         clickHandler.editTaskEventListener();
         clickHandler.removeTaskEventListener();
         clickHandler.checkboxEventListener();
@@ -109,7 +114,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates) {
                 priorityValue = button.value;
             }
         })
-        const currentProject = clickHandler.getCurrentProject();
+        const currentProject = projectsHandler.getProject(clickHandler.getCurrentProjectIndex());
         const todoIndex = clickHandler.getCurrentTodoIndex();
         const Todo = currentProject.getTodo(todoIndex);
         event.preventDefault();
@@ -117,9 +122,19 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates) {
         Todo.editTodo("description", descInput.value);
         Todo.editTodo("dueDate", dateInput.value);
         Todo.editTodo("priority", priorityValue);
-        displayAllTodos(currentProject);
+        if (clickHandler.ifInProject()) {
+            displayAllTodos(currentProject);
+            createTaskButtonsEventListeners();
+        }
+        else {
+            const todoDiv = document.querySelector(`.todo[data-index="${todoIndex}"][data-project-index="${currentProject.index}"]`);
+            if (!(todoDiv.classList.contains("expanded"))){
+                const button = document.querySelector(`.expand[data-index="${todoIndex}"][data-project-index="${currentProject.index}"]`);
+                expandTodo(todoDiv, currentProject, todoIndex, button)
+            }
+            editTask(currentProject, Todo);
+        }
         hideTaskUI();
-        createTaskButtonsEventListeners();
         clearSortButton();
         createSortButton();
         clickHandler.sortButtonEventListener(currentProject.getAllTodos(), dates.sortAscending(currentProject.getAllTodos()), false);
@@ -269,21 +284,25 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
     const removeProject = function (button) {
         removeProjectNav(button.dataset.index);
         projectsHandler.removeFromProjects(button.dataset.index);
+        displayAllProjectsNav(projectsHandler.getAllProjects());
         if (projectsHandler.getAllProjects().length === 0) {
             clearTodos();
             setProjectHeaderName("Please Add a New Project!");
             hideAddTaskButton();
         }
         else {
-            currentProjectIndex = button.dataset.index - 1;
+            currentProjectIndex = projectsHandler.getFirstProject().index;
             handleProjectSwitch();
+            projectsEventListener();
+            editProjectEventListener();
+            removeProjectEventListener();
         }
     }
     
     const handleExpandButton = function (button) {
         let todoIndex = button.dataset.index;
         const currentProject = projectsHandler.getProject(button.dataset.projectIndex);
-        const todoDiv = document.querySelector(`.todo[data-index="${button.dataset.index}"]`)
+        const todoDiv = document.querySelector(`.todo[data-index="${todoIndex}"][data-project-index="${button.dataset.projectIndex}"]`)
         if (todoDiv.classList.contains("expanded")){
             retractTodo(todoDiv, button);
         }
@@ -314,10 +333,14 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
 
     const editTask = function (button) {
         currentTodoIndex = button.dataset.index;
+        currentProjectIndex = button.dataset.projectIndex;
         const todo = projectsHandler.getProject(button.dataset.projectIndex).getTodo(button.dataset.index);
+        const priorityValue = todo.priority;
+        const radio = document.querySelector(`#${priorityValue}`);
         const titleInput = document.querySelector("#task-name");
         const descInput = document.querySelector("#task-desc");
         const dateInput = document.querySelector("#task-date");
+        radio.checked = true;
         titleInput.value = todo.title;
         descInput.value = todo.description;
         dateInput.value = todo.dueDate;
@@ -334,8 +357,9 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
 
     const removeTask = function (button) {
         const todoIndex = button.dataset.index;
-        removeTodo(todoIndex);
-        const project = projectsHandler.getProject(button.dataset.projectIndex);
+        const projectIndex = button.dataset.projectIndex
+        removeTodo(projectIndex, todoIndex);
+        const project = projectsHandler.getProject(projectIndex);
         project.removeTodo(todoIndex);
     }
 
@@ -385,12 +409,12 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         }
     }
 
-    const sortButtonEventListener = function (defaultTasks, tasks, addRightDiv = true) {
+    const sortButtonEventListener = function (defaultTasks, sortedTasks, addRightDiv = true) {
         const sortButton = document.querySelector(".sort-button");
         sortButton.addEventListener("click", () => {
             if (!(sortButton.classList.contains("sorting"))){
                 clearTodos();
-                displayAscDateTasks(tasks, addRightDiv);
+                displayAscDateTasks(sortedTasks, addRightDiv);
                 switchSortButton();
             }
             else {

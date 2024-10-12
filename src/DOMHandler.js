@@ -1,31 +1,38 @@
 import {format, isValid} from "date-fns";
 
-const displayNavProject = function (name, index) {
+const displayNavProject = function (project) {
     const projects = document.querySelector(".projects");
 
     const projectNavDiv = document.createElement("div");
-    projectNavDiv.dataset.index = index;
+    projectNavDiv.dataset.index = project.index;
     projectNavDiv.classList.add("project-div");
 
     const header = document.createElement("button");
     header.classList.add("project-nav")
-    header.textContent = name;
-    header.dataset.index = index;
+    header.textContent = project.name;
+    header.dataset.index = project.index;
 
     const editProject = document.createElement("button");
     editProject.classList.add("project-edit-button");
     editProject.textContent = "✍";
-    editProject.dataset.index = index;
+    editProject.dataset.index = project.index;
 
     const removeProject = document.createElement("button");
     removeProject.classList.add("project-remove-button");
     removeProject.textContent = "🗑";
-    removeProject.dataset.index = index;
+    removeProject.dataset.index = project.index;
 
     projectNavDiv.append(header, editProject, removeProject);
 
 
     projects.appendChild(projectNavDiv);
+}
+
+const displayAllProjectsNav = function (projects) {
+    clearProjectHeaders();
+    projects.forEach((project) => {
+        displayNavProject(project);
+    })
 }
 
 const displayProjectName = function (project) {
@@ -45,12 +52,7 @@ const clearProjectHeaders = function () {
     })
 }
 
-const displayAllProjectsNav = function (projects) {
-    clearProjectHeaders();
-    projects.forEach((project, index) => {
-        displayNavProject(project.name, index);
-    })
-}
+
 
 const removeProjectNav = function (index) {
     const projectNavDiv = document.querySelector(`.project-div[data-index="${index}"`);
@@ -161,6 +163,21 @@ const displayTodo = function (project, todo, index, addRightDiv = true ) {
 
 }
 
+const editTask = function (project, task) {
+    const taskDiv = document.querySelector(`.todo[data-index="${task.index}"][data-project-index="${project.index}"]`);
+    const label = taskDiv.querySelector("label");
+    label.textContent = task.title;
+
+    const description = taskDiv.querySelector(".task-description");
+    description.textContent = task.description;
+
+    const date = taskDiv.querySelector(".due-date");
+    date.textContent = task.dueDate;
+
+    const priority = taskDiv.querySelector(".task-priority");
+    priority.textContent = task.priority;
+}
+
 const clearTodos = function () {
     const todos = document.querySelectorAll(".todo");
     todos.forEach((todo) => todo.remove() );
@@ -168,8 +185,8 @@ const clearTodos = function () {
 
 const displayAllTodos = function (project){
     clearTodos();
-    project.todos.forEach((todo, index) => {
-        displayTodo(project, todo, index, false);
+    project.todos.forEach((todo) => {
+        displayTodo(project, todo, todo.index, false);
     });
 }
 
@@ -179,10 +196,12 @@ const expandTodo = function (todoDiv, project, todoIndex, button) {
     detailDiv.classList.add("detail");
 
     const priorityPara = document.createElement("p");
-    priorityPara.textContent = `Priority: ${project.todos[todoIndex].priority}`;
+    priorityPara.classList.add("task-priority");
+    priorityPara.textContent = `Priority: ${project.getTodo(todoIndex).priority}`;
 
     const detailPara = document.createElement("p");
-    detailPara.textContent = project.todos[todoIndex].description;
+    detailPara.classList.add("task-description");
+    detailPara.textContent = project.getTodo(todoIndex).description;
 
     detailDiv.append(priorityPara, detailPara);
     infoDiv.appendChild(detailDiv);
@@ -200,8 +219,8 @@ const retractTodo = function (todoDiv, button) {
     todoDiv.classList.remove("expanded");
 }
 
-const removeTodo = function (index) {
-    const todoDiv = document.querySelector(`.todo[data-index="${index}"`);
+const removeTodo = function (projectIndex, todoIndex) {
+    const todoDiv = document.querySelector(`.todo[data-index="${todoIndex}"][data-project-index="${projectIndex}"]`);
     todoDiv.remove();
 }
 
@@ -288,4 +307,4 @@ const showAddTaskButton = function () {
 
 
 
-export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodo, displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton};
+export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodo, displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton, editTask};
