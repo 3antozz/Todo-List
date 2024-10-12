@@ -222,6 +222,20 @@ const createSortButton = function () {
     topDiv.appendChild(button);
 }
 
+const switchSortButton = function () {
+    const button = document.querySelector(".sort-button");
+
+    if (button.classList.contains("sorting")) {
+        button.textContent = "Sort by Date (Ascending)";
+        button.classList.remove("sorting");
+    }
+
+    else {
+        button.textContent = "Sort by Default";
+        button.classList.add("sorting");
+    }
+}
+
 const clearSortButton = function () {
     const sortButton = document.querySelector(".sort-button");
     sortButton.remove();
@@ -259,7 +273,6 @@ const hideTaskUI = function () {
     const confirmTask = document.querySelector(".confirm");
     confirmTask.classList.remove("confirm-edit");
     const addUi = document.querySelector(".add-task-ui");
-    showAddTaskButton();
     addUi.style.display = "none";
 }
 
@@ -275,4 +288,4 @@ const showAddTaskButton = function () {
 
 
 
-export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodo, displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton};
+export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodo, displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton};
