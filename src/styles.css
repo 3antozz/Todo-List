@@ -34,16 +34,33 @@
     isolation: isolate;
   }
 
+  :root.light {
+    --bckgrnd-clr: white;
+    --txt-clr: black;
+  }
+
+
+  :root.dark {
+    --bckgrnd-clr: #1b1b1b;
+    --txt-clr: white;
+  }
+  
+
+
   body {
     display: flex;
     flex-direction: column;
     height: 100dvh;
     font-family: "Roboto", sans-serif;
+    color: var(--txt-clr);
   }
 
   header {
     padding: 1rem;
     background-color: beige;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   main {
@@ -216,6 +233,7 @@
 
   .content {
     padding: 1rem 4rem;
+    background-color: var(--bckgrnd-clr);
   }
 
   .content > h1 {

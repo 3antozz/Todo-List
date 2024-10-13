@@ -35,9 +35,6 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
         })
     }
     
-
-
-
     const defaultProject = projectsHandler.getFirstProject();
     const dates = sortDates(projectsHandler);
     const clickHandler = dynamicButtonsEventListeners(projectsHandler, dates);
@@ -57,6 +54,28 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
     clickHandler.navigationButtonsEventListeners();
     createSortButton();
     clickHandler.sortButtonEventListener(defaultProject.getAllTodos(), dates.sortAscending(defaultProject.getAllTodos()), dates.sortPriority(defaultProject.getAllTodos()), false);
+})();
+
+(function themeSwitcher () {
+    const root = document.documentElement;
+
+    if (localStorage.getItem("Theme")) {
+        root.className = localStorage.getItem("Theme");
+    }
+
+    const themeButton = document.querySelector(".switch-theme");
+
+    themeButton.addEventListener("click", () => {
+        if (root.className === "light") {
+            root.className = "dark";
+            localStorage.setItem("Theme", "dark");
+        }
+        else {
+            root.className = "light";
+            localStorage.setItem("Theme", "light");
+        }
+    })
+
 })();
 
 function updateLocalStorage (projectsHandler) {
