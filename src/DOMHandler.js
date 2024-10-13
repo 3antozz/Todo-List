@@ -246,7 +246,6 @@ const createSortButton = function () {
 
 const switchSortButton = function () {
     const button = document.querySelector(".sort-button");
-    console.log("called!");
 
     if (button.classList.contains("ascending")) {
         button.textContent = "Sorted by Priority";

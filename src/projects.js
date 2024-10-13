@@ -1,20 +1,12 @@
 function handleProjects () {
     let projects = [];
     let i = 0
-    let defaultProject = new Project("EL Wesmo");
-    let defaultTodo1 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-11", "Normal");
-    let defaultTodo3 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-09", "Low");
-    let defaultTodo2 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-08", "High");
-
-    defaultProject.addTodo(defaultTodo1, 0);
-    defaultProject.addTodo(defaultTodo2, 0);
-    defaultProject.addTodo(defaultTodo3, 0);
 
     const getFirstProject = () => projects[0];
     const getAllProjects = () => projects;
     const getProject = (projectIndex) =>  { return projects.find((project) => project.index == projectIndex);}
     const addProject = function  (project){
-        length = projects.push(project);
+        projects.push(project);
         project.index = i++;
     }
     const removeFromProjects = (projectIndex) => {
@@ -57,7 +49,6 @@ function handleProjects () {
     }
 
 
-    addProject(defaultProject);
 
     return {getAllProjects, addProject, removeFromProjects, getProject, getAllUncompletedTasks, getAllCompletedTasks, getAllImportantTasks, getFirstProject}
 }
@@ -94,13 +85,13 @@ class Project {
 
 class Todo {
 
-    constructor (title, description, dueDate = "No Due Date", priority = "Normal") {
+    constructor (title, description, dueDate = "No Due Date", priority = "Normal", complete = false, important = false) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
-        this.complete = false;
-        this.important = false;
+        this.complete = complete;
+        this.important = important;
         switch (priority) {
             case "Low":
                 this.priorityValue = 0;

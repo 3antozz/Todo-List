@@ -6,14 +6,46 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
 
 (function init (){
     const projectsHandler = handleProjects();
-    const defaultProject = projectsHandler.getProject(0);
+
+    const testStorage = JSON.parse(localStorage.getItem("Projects"));
+    let firstProject;
+
+    if (!testStorage || testStorage.length === 0) {
+        firstProject = new Project("EL Wesmo");
+        let defaultTodo1 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-11", "Normal");
+        let defaultTodo3 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-09", "Low");
+        let defaultTodo2 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-08", "High");
+    
+        firstProject.addTodo(defaultTodo1, 0);
+        firstProject.addTodo(defaultTodo2, 0);
+        firstProject.addTodo(defaultTodo3, 0);
+
+        projectsHandler.addProject(firstProject);
+        updateLocalStorage (projectsHandler);
+    }
+
+    else {
+        const parsedProjects = JSON.parse(localStorage.getItem("Projects"));
+        const projects = parsedProjects.map((project) => {
+                const newProject = new Project(project.name);
+                projectsHandler.addProject(newProject);
+                const todos = project.todos.map((todo) => new Todo(todo.title, todo.description, todo.dueDate, todo.priority, todo.complete, todo.important));
+                todos.forEach((todo) => newProject.addTodo(todo, newProject.index));
+                return newProject;
+        })
+    }
+    
+
+
+
+    const defaultProject = projectsHandler.getFirstProject();
     const dates = sortDates(projectsHandler);
     const clickHandler = dynamicButtonsEventListeners(projectsHandler, dates);
     const projectSection = sortProjectsButtonsHandler(projectsHandler, clickHandler, dates);
     staticButtonsEventListeners(projectsHandler, clickHandler, dates, projectSection);
-    displayAllProjectsNav(projectsHandler.getAllProjects());
     displayProjectName(defaultProject);
     displayAllTodos(defaultProject);
+    displayAllProjectsNav(projectsHandler.getAllProjects());
     clickHandler.expandButtonsListener();
     clickHandler.editTaskEventListener();
     clickHandler.projectsEventListener();
@@ -25,13 +57,11 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
     clickHandler.navigationButtonsEventListeners();
     createSortButton();
     clickHandler.sortButtonEventListener(defaultProject.getAllTodos(), dates.sortAscending(defaultProject.getAllTodos()), dates.sortPriority(defaultProject.getAllTodos()), false);
-
-
-
-    // document.addEventListener("click", () => {
-    //     console.log(projectsHandler.getAllProjects());
-    // });
 })();
+
+function updateLocalStorage (projectsHandler) {
+    localStorage.setItem("Projects", JSON.stringify(projectsHandler.getAllProjects()))
+}
 
 function staticButtonsEventListeners (projectsHandler, clickHandler, dates, projectSection) {
     const confirmProject = document.querySelector(".form-buttons button:first-child");
@@ -87,6 +117,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates, proj
         event.preventDefault();
         const project = new Project(input.value);
         projectsHandler.addProject(project);
+        updateLocalStorage (projectsHandler);
         displayAllProjectsNav(projectsHandler.getAllProjects());
         hideProjectUI(addButton);
         clickHandler.handleProjectSwitch(project, project.index);
@@ -98,6 +129,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates, proj
         event.preventDefault();
         const project = clickHandler.getEditedProject();
         project.editProject(input.value);
+        updateLocalStorage (projectsHandler);
         hideProjectUI(addButton);
         displayAllProjectsNav(projectsHandler.getAllProjects());
         createProjectButtonsEventListeners();
@@ -117,6 +149,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates, proj
         event.preventDefault();
         const todo = new Todo(titleInput.value, descInput.value, dateInput.value, priorityValue);
         currentProject.addTodo(todo, clickHandler.getCurrentProjectIndex());
+        updateLocalStorage (projectsHandler);
         displayAllTodos(currentProject);
         hideTaskUI();
         createTaskButtonsEventListeners();
@@ -141,6 +174,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates, proj
         Todo.editTodo("dueDate", dateInput.value);
         Todo.editTodo("priority", priorityValue);
         Todo.editTodo("priorityValue", Todo.convertPriorityToInt(priorityValue));
+        updateLocalStorage (projectsHandler);
         if (clickHandler.ifInProject()) {
             displayAllTodos(currentProject);
             createTaskButtonsEventListeners();
@@ -148,7 +182,6 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates, proj
         else {
             clearTodos();
             const tasks = projectSection.getCurrentSectionTasks();
-            console.log(tasks);
             clickHandler.displaySortedTasks(tasks, true);
         }
         hideTaskUI();
@@ -322,6 +355,7 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
     const removeProject = function (button) {
         removeProjectNav(button.dataset.index);
         projectsHandler.removeFromProjects(button.dataset.index);
+        updateLocalStorage (projectsHandler);
         displayAllProjectsNav(projectsHandler.getAllProjects());
         if (projectsHandler.getAllProjects().length === 0) {
             clearTodos();
@@ -399,6 +433,7 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         removeTodo(projectIndex, todoIndex);
         const project = projectsHandler.getProject(projectIndex);
         project.removeTodo(todoIndex);
+        updateLocalStorage (projectsHandler);
     }
 
     const importantTaskEventListener = function () {
@@ -417,10 +452,12 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         if (todo.important) {
             todo.editTodo("important", false);
             unmarkImportant(button);
+            updateLocalStorage (projectsHandler);
         }
         else {
             todo.editTodo("important", true);
             markImportant(button);
+            updateLocalStorage (projectsHandler);
         }
     }
 
@@ -440,10 +477,12 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         if (todo.complete) {
             todo.editTodo("complete", false);
             todoDiv.classList.remove("completed-task");
+            updateLocalStorage (projectsHandler);
         }
         else {
             todo.editTodo("complete", true);
             todoDiv.classList.add("completed-task");
+            updateLocalStorage (projectsHandler);
         }
     }
 
@@ -503,7 +542,6 @@ function sortProjectsButtonsHandler (projectsHandler, clickHandler, sortDates) {
     let currentSection;
 
     const getCurrentSectionTasks = function () {
-        console.log(currentSection);
         switch (currentSection) {
             case "upcoming":
                 return sortDates.getUpcomingTodos();
