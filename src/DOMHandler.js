@@ -175,20 +175,6 @@ const displayTodo = function (project, todo, index, addRightDiv = true ) {
 
 }
 
-const editTask = function (project, task) {
-    const taskDiv = document.querySelector(`.todo[data-index="${task.index}"][data-project-index="${project.index}"]`);
-    const label = taskDiv.querySelector("label");
-    label.textContent = task.title;
-
-    const description = taskDiv.querySelector(".task-description");
-    description.textContent = task.description;
-
-    const date = taskDiv.querySelector(".due-date");
-    date.textContent = task.dueDate;
-
-    const priority = taskDiv.querySelector(".task-priority");
-    priority.textContent = `Priority: ${task.priority}`;
-}
 
 const clearTodos = function () {
     const todos = document.querySelectorAll(".todo");
@@ -248,7 +234,7 @@ const createSortButton = function () {
     const topDiv = document.querySelector(".top-nav");
     const button = document.createElement("button");
     button.classList.add("sort-button", "default");
-    button.textContent = "Sorted by Default!";
+    button.textContent = "Sorted by Default";
 
     topDiv.appendChild(button);
 }
@@ -258,13 +244,13 @@ const switchSortButton = function () {
     console.log("called!");
 
     if (button.classList.contains("ascending")) {
-        button.textContent = "Sorted by Priority!";
+        button.textContent = "Sorted by Priority";
         button.classList.add("sort-priority");
         button.classList.remove("ascending");
     }
 
     else if (button.classList.contains("sort-priority")) {
-        button.textContent = "Sorted by Default!";
+        button.textContent = "Sorted by Default";
         button.classList.remove("sort-priority");
         button.classList.add("default");
 
@@ -272,7 +258,7 @@ const switchSortButton = function () {
 
     else if (button.classList.contains("default")) {
 
-        button.textContent = "Sorted by Date! (Ascending)";
+        button.textContent = "Sorted by Date (Ascending)";
         button.classList.add("ascending");
         button.classList.remove("default");
     }
@@ -330,4 +316,4 @@ const showAddTaskButton = function () {
 
 
 
-export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodo, displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton, editTask};
+export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodo, displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton};

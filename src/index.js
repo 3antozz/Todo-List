@@ -9,8 +9,8 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
     const defaultProject = projectsHandler.getProject(0);
     const dates = sortDates(projectsHandler);
     const clickHandler = dynamicButtonsEventListeners(projectsHandler, dates);
-    sortProjectsButtonsHandler(projectsHandler, clickHandler, dates);
-    staticButtonsEventListeners(projectsHandler, clickHandler, dates);
+    const projectSection = sortProjectsButtonsHandler(projectsHandler, clickHandler, dates);
+    staticButtonsEventListeners(projectsHandler, clickHandler, dates, projectSection);
     displayAllProjectsNav(projectsHandler.getAllProjects());
     displayProjectName(defaultProject);
     displayAllTodos(defaultProject);
@@ -27,12 +27,12 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
 
 
 
-    document.addEventListener("click", () => {
-        console.log(projectsHandler.getAllProjects());
-    });
+    // document.addEventListener("click", () => {
+    //     console.log(projectsHandler.getAllProjects());
+    // });
 })();
 
-function staticButtonsEventListeners (projectsHandler, clickHandler, dates) {
+function staticButtonsEventListeners (projectsHandler, clickHandler, dates, projectSection) {
     const confirmProject = document.querySelector(".form-buttons button:first-child");
     const cancelProject = document.querySelector(".form-buttons :not(button:first-child)");
     const addButton = document.querySelector(".add-project");
@@ -128,12 +128,10 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates) {
             createTaskButtonsEventListeners();
         }
         else {
-            const todoDiv = document.querySelector(`.todo[data-index="${todoIndex}"][data-project-index="${currentProject.index}"]`);
-            if (!(todoDiv.classList.contains("expanded"))){
-                const button = document.querySelector(`.expand[data-index="${todoIndex}"][data-project-index="${currentProject.index}"]`);
-                expandTodo(todoDiv, currentProject, todoIndex, button)
-            }
-            editTask(currentProject, Todo);
+            clearTodos();
+            const tasks = projectSection.getCurrentSectionTasks();
+            console.log(tasks);
+            clickHandler.displaySortedTasks(tasks, true);
         }
         hideTaskUI();
         clearSortButton();
@@ -415,23 +413,23 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         sortButton.addEventListener("click", () => {
             if (sortButton.classList.contains("default")){
                 clearTodos();
-                displayAscDateTasks(sortedTasks, addRightDiv);
+                displaySortedTasks(sortedTasks, addRightDiv);
                 switchSortButton();
             }
             else if (sortButton.classList.contains("ascending")) {
                 clearTodos();
-                displayAscDateTasks(priorityTasks, addRightDiv);
+                displaySortedTasks(priorityTasks, addRightDiv);
                 switchSortButton();
             }
             else if(sortButton.classList.contains("sort-priority")){
                 clearTodos();
-                displayAscDateTasks(defaultTasks, addRightDiv);
+                displaySortedTasks(defaultTasks, addRightDiv);
                 switchSortButton();
             }
         })
     }
 
-    const displayAscDateTasks = function (tasks, addRightDiv) {
+    const displaySortedTasks = function (tasks, addRightDiv) {
         tasks.forEach((task) => {
             const project = projectsHandler.getProject(task.projectIndex);
             if (addRightDiv) {
@@ -454,7 +452,7 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
 
 
 
-    return {projectsEventListener, expandButtonsListener, getCurrentProject,  getCurrentProjectIndex, editTaskEventListener, handleProjectSwitch, getCurrentTodoIndex, editProjectEventListener, getEditedProject, removeProjectEventListener, removeTaskEventListener, checkboxEventListener, importantTaskEventListener, sortButtonEventListener, ifInProject, setIfInProject }
+    return {projectsEventListener, expandButtonsListener, getCurrentProject,  getCurrentProjectIndex, editTaskEventListener, handleProjectSwitch, getCurrentTodoIndex, editProjectEventListener, getEditedProject, removeProjectEventListener, removeTaskEventListener, checkboxEventListener, importantTaskEventListener, sortButtonEventListener, ifInProject, setIfInProject, displaySortedTasks }
     
 
 }
@@ -462,6 +460,31 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
 
 
 function sortProjectsButtonsHandler (projectsHandler, clickHandler, sortDates) {
+
+    let currentSection;
+
+    const getCurrentSectionTasks = function () {
+        console.log(currentSection);
+        switch (currentSection) {
+            case "upcoming":
+                return projectsHandler.getAllUncompletedTasks();
+        
+            case "today":
+                return sortDates.getTodayTodos();
+
+            case "tomorrow":
+                return sortDates.getTomorrowTodos();
+        
+            case "week":
+                return sortDates.getWeekTodos();
+
+            case "important":
+                return projectsHandler.getAllImportantTasks();;
+
+            case "complete": 
+                return projectsHandler.getAllCompletedTasks();
+        }
+    }
 
     const displaySortedTasks = function (tasks) {
         clearTodos();
@@ -489,6 +512,7 @@ function sortProjectsButtonsHandler (projectsHandler, clickHandler, sortDates) {
     const upcomingHandler = (function () {
         const inboxButton = document.querySelector(".inbox")
         inboxButton.addEventListener("click", (event) => {
+            currentSection = "upcoming";
             const tasks = projectsHandler.getAllUncompletedTasks();
             displaySortedTasks(tasks);
             if (!(projectsHandler.getAllProjects().length === 0)) {
@@ -500,6 +524,7 @@ function sortProjectsButtonsHandler (projectsHandler, clickHandler, sortDates) {
     const TodayHandler = (function () {
         const todayButton = document.querySelector(".today");
         todayButton.addEventListener("click", (event) => {
+            currentSection = "today";
             const todayTasks = sortDates.getTodayTodos();
             displaySortedTasks(todayTasks);
             if (!(projectsHandler.getAllProjects().length === 0)) {
@@ -511,6 +536,7 @@ function sortProjectsButtonsHandler (projectsHandler, clickHandler, sortDates) {
     const TomorrowHandler = (function () {
         const tomorrowButton = document.querySelector(".tomorrow");
         tomorrowButton.addEventListener("click", (event) => {
+            currentSection = "tomorrow";
             const tomorrowTasks = sortDates.getTomorrowTodos();
             displaySortedTasks(tomorrowTasks);
             if (!(projectsHandler.getAllProjects().length === 0)) {
@@ -522,6 +548,7 @@ function sortProjectsButtonsHandler (projectsHandler, clickHandler, sortDates) {
     const WeekHandler = (function () {
         const WeekButton = document.querySelector(".this-week");
         WeekButton.addEventListener("click", (event) => {
+            currentSection = "week";
             const WeekTasks = sortDates.getWeekTodos();
             displaySortedTasks(WeekTasks);
             if (!(projectsHandler.getAllProjects().length === 0)) {
@@ -533,6 +560,7 @@ function sortProjectsButtonsHandler (projectsHandler, clickHandler, sortDates) {
     const CompleteHandler = (function () {
         const CompleteButton = document.querySelector(".complete");
         CompleteButton.addEventListener("click", (event) => {
+            currentSection = "complete";
             const CompleteTasks = projectsHandler.getAllCompletedTasks();
             displaySortedTasks(CompleteTasks);
             if (!(projectsHandler.getAllProjects().length === 0)) {
@@ -544,6 +572,7 @@ function sortProjectsButtonsHandler (projectsHandler, clickHandler, sortDates) {
     const ImportantHandler = (function () {
         const importantButton = document.querySelector(".important");
         importantButton.addEventListener("click", (event) => {
+            currentSection = "important";
             const importantTasks = projectsHandler.getAllImportantTasks();
             displaySortedTasks(importantTasks );
             if (!(projectsHandler.getAllProjects().length === 0)) {
@@ -551,6 +580,8 @@ function sortProjectsButtonsHandler (projectsHandler, clickHandler, sortDates) {
             }
         })
     })();
+
+    return {getCurrentSectionTasks}
 
 }
 
