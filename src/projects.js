@@ -2,7 +2,7 @@ function handleProjects () {
     let projects = [];
     let i = 0
     let defaultProject = new Project("EL Wesmo");
-    let defaultTodo1 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-11", "High");
+    let defaultTodo1 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-11", "Low");
     let defaultTodo2 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-09", "High");
 
     defaultProject.addTodo(defaultTodo1, 0);
@@ -67,13 +67,13 @@ class Project {
         this.name = name;
         this.todos = [];
     }
-    i = 0;
+    static i = 0;
 
     getAllTodos () { return this.todos; }
     getTodo (taskIndex) { return this.todos.find((todo) => todo.index == taskIndex ); }
 
     addTodo (todo, index) { 
-        todo.index = this.i++;
+        todo.index = Project.i++;
         todo.projectIndex = index;
         this.todos.push(todo);
     }
@@ -96,12 +96,34 @@ class Todo {
         this.priority = priority;
         this.complete = false;
         this.important = false;
+        switch (priority) {
+            case "Low":
+                this.priorityValue = 0;
+                break;
+            case "Normal":
+                this.priorityValue = 1;
+                break;
+            case "High":
+                this.priorityValue = 2;
+                break;
+        }
     }
 
     getTodo () { return this }
 
     editTodo (property, value) {
         this[property] = value;
+    }
+
+    convertPriorityToInt(priority) {
+        switch (priority) {
+            case "Low":
+                return 0;
+            case "Normal":
+                return 1;
+            case "High":
+                return 2;
+        }
     }
 }
 

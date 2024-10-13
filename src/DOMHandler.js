@@ -64,11 +64,23 @@ const displayTodo = function (project, todo, index, addRightDiv = true ) {
     const initialDiv = document.createElement("div");
     initialDiv.classList.add("initial");
 
-
     const todoDiv = document.createElement("div");
     todoDiv.classList.add("todo");
     todoDiv.dataset.index = index;
     todoDiv.dataset.projectIndex = todo.projectIndex;
+
+    switch (todo.priority) {
+        case "Low":
+            todoDiv.classList.add("low")
+            break;
+    
+        case "Normal":
+            todoDiv.classList.add("normal")
+            break;
+        case "High":
+            todoDiv.classList.add("high");
+            break;
+    }
 
     const leftDiv = document.createElement("div");
     leftDiv.classList.add("left");
@@ -175,7 +187,7 @@ const editTask = function (project, task) {
     date.textContent = task.dueDate;
 
     const priority = taskDiv.querySelector(".task-priority");
-    priority.textContent = task.priority;
+    priority.textContent = `Priority: ${task.priority}`;
 }
 
 const clearTodos = function () {
@@ -235,7 +247,7 @@ const unmarkImportant = function (starDiv) {
 const createSortButton = function () {
     const topDiv = document.querySelector(".top-nav");
     const button = document.createElement("button");
-    button.classList.add("sort-button");
+    button.classList.add("sort-button", "default");
     button.textContent = "Sort by Date (Ascending)";
 
     topDiv.appendChild(button);
@@ -243,15 +255,25 @@ const createSortButton = function () {
 
 const switchSortButton = function () {
     const button = document.querySelector(".sort-button");
+    console.log("called!");
 
-    if (button.classList.contains("sorting")) {
+    if (button.classList.contains("ascending")) {
         button.textContent = "Sort by Date (Ascending)";
-        button.classList.remove("sorting");
+        button.classList.remove("ascending");
+        button.classList.add("default");
     }
 
-    else {
+    else if (button.classList.contains("sort-priority")) {
         button.textContent = "Sort by Default";
-        button.classList.add("sorting");
+        button.classList.remove("sort-priority");
+        button.classList.add("ascending");
+
+    }
+
+    else if (button.classList.contains("default")) {
+        button.textContent = "Sort by Priority";
+        button.classList.add("sort-priority");
+        button.classList.remove("default");
     }
 }
 

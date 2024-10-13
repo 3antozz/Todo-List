@@ -314,6 +314,18 @@
     font-weight: bold;
   }
 
+  .low {
+    background-color: rgba(64, 224, 208, 0.448);
+  }
+
+  .normal {
+    background-color: rgba(255, 192, 203, 0.536);
+  }
+
+  .high {
+    background-color: rgba(255, 0, 0, 0.459);
+  }
+
 
 
 

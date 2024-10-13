@@ -23,7 +23,7 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
     clickHandler.checkboxEventListener();
     clickHandler.importantTaskEventListener()
     createSortButton();
-    clickHandler.sortButtonEventListener(defaultProject.getAllTodos(), dates.sortAscending(defaultProject.getAllTodos()), false);
+    clickHandler.sortButtonEventListener(defaultProject.getAllTodos(), dates.sortAscending(defaultProject.getAllTodos()), dates.sortPriority(defaultProject.getAllTodos()), false);
 
 
 
@@ -104,7 +104,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates) {
         createTaskButtonsEventListeners();
         clearSortButton();
         createSortButton();
-        clickHandler.sortButtonEventListener(currentProject.getAllTodos(), dates.sortAscending(currentProject.getAllTodos()), false);
+        clickHandler.sortButtonEventListener(currentProject.getAllTodos(), dates.sortAscending(currentProject.getAllTodos()), dates.sortPriority(currentProject.getAllTodos()), false);
     }
 
     const editTodo = function (event) {
@@ -122,6 +122,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates) {
         Todo.editTodo("description", descInput.value);
         Todo.editTodo("dueDate", dateInput.value);
         Todo.editTodo("priority", priorityValue);
+        Todo.editTodo("priorityValue", Todo.convertPriorityToInt(priorityValue));
         if (clickHandler.ifInProject()) {
             displayAllTodos(currentProject);
             createTaskButtonsEventListeners();
@@ -137,7 +138,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates) {
         hideTaskUI();
         clearSortButton();
         createSortButton();
-        clickHandler.sortButtonEventListener(currentProject.getAllTodos(), dates.sortAscending(currentProject.getAllTodos()), false);
+        clickHandler.sortButtonEventListener(currentProject.getAllTodos(), dates.sortAscending(currentProject.getAllTodos()), dates.sortPriority(currentProject.getAllTodos()), false);
     }
 
 
@@ -249,7 +250,7 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         checkboxEventListener();
         importantTaskEventListener();
         hideTaskUI();
-        sortButtonEventListener(currentProject.getAllTodos(), dates.sortAscending(currentProject.getAllTodos()), false);
+        sortButtonEventListener(currentProject.getAllTodos(), dates.sortAscending(currentProject.getAllTodos()), dates.sortPriority(currentProject.getAllTodos()), false);
         isInProject = true;
         currentProjectIndex = projectIndex;
     }
@@ -409,17 +410,22 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         }
     }
 
-    const sortButtonEventListener = function (defaultTasks, sortedTasks, addRightDiv = true) {
+    const sortButtonEventListener = function (defaultTasks, sortedTasks, priorityTasks, addRightDiv = true) {
         const sortButton = document.querySelector(".sort-button");
         sortButton.addEventListener("click", () => {
-            if (!(sortButton.classList.contains("sorting"))){
+            if (sortButton.classList.contains("default")){
                 clearTodos();
                 displayAscDateTasks(sortedTasks, addRightDiv);
                 switchSortButton();
             }
-            else {
+            else if (sortButton.classList.contains("ascending")) {
                 clearTodos();
                 displayAscDateTasks(defaultTasks, addRightDiv);
+                switchSortButton();
+            }
+            else if(sortButton.classList.contains("sort-priority")){
+                clearTodos();
+                displayAscDateTasks(priorityTasks, addRightDiv);
                 switchSortButton();
             }
         })
@@ -475,7 +481,8 @@ function sortProjectsButtonsHandler (projectsHandler, clickHandler, sortDates) {
         clickHandler.setIfInProject(false);
         
         const AscSortedTasks = sortDates.sortAscending(tasks);
-        clickHandler.sortButtonEventListener(tasks, AscSortedTasks);
+        const priorityTasks = sortDates.sortPriority(tasks);
+        clickHandler.sortButtonEventListener(tasks, AscSortedTasks, priorityTasks);
 
     }
 
@@ -580,6 +587,13 @@ function sortDates (projectsHandler) {
         return WeekTasks;
     }
 
+    const sortPriority = function (tasks) {
+        const sortedTasks = tasks.toSorted((task1, task2) => {
+            return task2.priorityValue - task1.priorityValue;
+        })
+        return sortedTasks;
+    }
+
     const sortAscending = function (tasks) {
         const sortedTasks = tasks.toSorted((task1, task2) => {
             return compareAsc(new Date(task1.dueDate), new Date(task2.dueDate))
@@ -587,7 +601,7 @@ function sortDates (projectsHandler) {
         return sortedTasks;
     }
 
-    return {getTodayTodos, getTomorrowTodos, getWeekTodos, sortAscending}
+    return {getTodayTodos, getTomorrowTodos, getWeekTodos, sortAscending, sortPriority}
 
 
 }
