@@ -1,7 +1,7 @@
 import "./styles.css";
 import {Project, Todo, handleProjects} from "./projects.js";
 import {isTomorrow, isThisWeek, isToday, compareAsc, isFuture } from "date-fns";
-import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodo,  displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton, editTask } from "./DOMHandler.js";
+import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodo,  displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton } from "./DOMHandler.js";
 
 
 (function init (){

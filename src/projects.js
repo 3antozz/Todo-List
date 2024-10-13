@@ -73,6 +73,9 @@ class Project {
 
     getAllTodos () { return this.todos; }
     getTodo (taskIndex) { return this.todos.find((todo) => todo.index == taskIndex ); }
+    getUncompleteTodos () {
+        return this.todos.filter((todo) => (!todo.complete));
+    }
 
     addTodo (todo, index) { 
         todo.index = Project.i++;

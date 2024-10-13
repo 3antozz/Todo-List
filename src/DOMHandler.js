@@ -183,7 +183,7 @@ const clearTodos = function () {
 
 const displayAllTodos = function (project){
     clearTodos();
-    project.todos.forEach((todo) => {
+    project.getUncompleteTodos().forEach((todo) => {
         displayTodo(project, todo, todo.index, false);
     });
 }
