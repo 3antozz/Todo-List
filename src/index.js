@@ -420,12 +420,12 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
             }
             else if (sortButton.classList.contains("ascending")) {
                 clearTodos();
-                displayAscDateTasks(defaultTasks, addRightDiv);
+                displayAscDateTasks(priorityTasks, addRightDiv);
                 switchSortButton();
             }
             else if(sortButton.classList.contains("sort-priority")){
                 clearTodos();
-                displayAscDateTasks(priorityTasks, addRightDiv);
+                displayAscDateTasks(defaultTasks, addRightDiv);
                 switchSortButton();
             }
         })
@@ -589,7 +589,11 @@ function sortDates (projectsHandler) {
 
     const sortPriority = function (tasks) {
         const sortedTasks = tasks.toSorted((task1, task2) => {
-            return task2.priorityValue - task1.priorityValue;
+            if (task2.priorityValue !== task1.priorityValue) {
+                return task2.priorityValue - task1.priorityValue;
+            }
+
+            return compareAsc(new Date(task1.dueDate), new Date(task2.dueDate));
         })
         return sortedTasks;
     }

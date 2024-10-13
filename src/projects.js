@@ -2,11 +2,13 @@ function handleProjects () {
     let projects = [];
     let i = 0
     let defaultProject = new Project("EL Wesmo");
-    let defaultTodo1 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-11", "Low");
-    let defaultTodo2 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-09", "High");
+    let defaultTodo1 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-11", "Normal");
+    let defaultTodo3 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-09", "Low");
+    let defaultTodo2 = new Todo("Kherya Guettala", "Roh adrebha b kherya mich normal", "2024-10-08", "High");
 
     defaultProject.addTodo(defaultTodo1, 0);
     defaultProject.addTodo(defaultTodo2, 0);
+    defaultProject.addTodo(defaultTodo3, 0);
 
     const getFirstProject = () => projects[0];
     const getAllProjects = () => projects;

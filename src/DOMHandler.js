@@ -248,7 +248,7 @@ const createSortButton = function () {
     const topDiv = document.querySelector(".top-nav");
     const button = document.createElement("button");
     button.classList.add("sort-button", "default");
-    button.textContent = "Sort by Date (Ascending)";
+    button.textContent = "Sorted by Default!";
 
     topDiv.appendChild(button);
 }
@@ -258,21 +258,22 @@ const switchSortButton = function () {
     console.log("called!");
 
     if (button.classList.contains("ascending")) {
-        button.textContent = "Sort by Date (Ascending)";
+        button.textContent = "Sorted by Priority!";
+        button.classList.add("sort-priority");
         button.classList.remove("ascending");
-        button.classList.add("default");
     }
 
     else if (button.classList.contains("sort-priority")) {
-        button.textContent = "Sort by Default";
+        button.textContent = "Sorted by Default!";
         button.classList.remove("sort-priority");
-        button.classList.add("ascending");
+        button.classList.add("default");
 
     }
 
     else if (button.classList.contains("default")) {
-        button.textContent = "Sort by Priority";
-        button.classList.add("sort-priority");
+
+        button.textContent = "Sorted by Date! (Ascending)";
+        button.classList.add("ascending");
         button.classList.remove("default");
     }
 }
