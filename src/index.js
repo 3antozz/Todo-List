@@ -1,6 +1,6 @@
 import "./styles.css";
 import {Project, Todo, handleProjects} from "./projects.js";
-import {isTomorrow, isThisWeek, isToday, compareAsc } from "date-fns";
+import {isTomorrow, isThisWeek, isToday, compareAsc, isFuture } from "date-fns";
 import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodo,  displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton, editTask } from "./DOMHandler.js";
 
 
@@ -467,7 +467,7 @@ function sortProjectsButtonsHandler (projectsHandler, clickHandler, sortDates) {
         console.log(currentSection);
         switch (currentSection) {
             case "upcoming":
-                return projectsHandler.getAllUncompletedTasks();
+                return sortDates.getUpcomingTodos();
         
             case "today":
                 return sortDates.getTodayTodos();
@@ -513,7 +513,7 @@ function sortProjectsButtonsHandler (projectsHandler, clickHandler, sortDates) {
         const inboxButton = document.querySelector(".inbox")
         inboxButton.addEventListener("click", (event) => {
             currentSection = "upcoming";
-            const tasks = projectsHandler.getAllUncompletedTasks();
+            const tasks = sortDates.getUpcomingTodos();
             displaySortedTasks(tasks);
             if (!(projectsHandler.getAllProjects().length === 0)) {
                 setProjectHeaderName("Upcoming");
@@ -588,6 +588,16 @@ function sortProjectsButtonsHandler (projectsHandler, clickHandler, sortDates) {
 
 function sortDates (projectsHandler) {
 
+    const getUpcomingTodos = function () {
+        const AllTasks = projectsHandler.getAllUncompletedTasks();
+
+        const upcomingTasks = AllTasks.filter((task) => {
+            return isFuture(task.dueDate);
+        })
+
+        return upcomingTasks;
+    }
+
     const getTodayTodos = function () {
         const AllTasks = projectsHandler.getAllUncompletedTasks();
 
@@ -636,7 +646,7 @@ function sortDates (projectsHandler) {
         return sortedTasks;
     }
 
-    return {getTodayTodos, getTomorrowTodos, getWeekTodos, sortAscending, sortPriority}
+    return {getUpcomingTodos, getTodayTodos, getTomorrowTodos, getWeekTodos, sortAscending, sortPriority}
 
 
 }
