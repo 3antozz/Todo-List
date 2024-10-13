@@ -188,6 +188,11 @@ const displayAllTodos = function (project){
     });
 }
 
+const selectButton = (button) => button.classList.add("selected");
+
+const unselectButton = (button) => button.classList.remove("selected");
+
+
 const expandTodo = function (todoDiv, project, todoIndex, button) {
     const infoDiv = todoDiv.querySelector(".info");
     const detailDiv = document.createElement("div");
@@ -316,4 +321,4 @@ const showAddTaskButton = function () {
 
 
 
-export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodo, displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton};
+export {displayNavProject, displayProjectName, displayAllProjectsNav, removeProjectNav, displayTodo, displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton, selectButton, unselectButton};

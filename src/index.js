@@ -1,7 +1,7 @@
 import "./styles.css";
 import {Project, Todo, handleProjects} from "./projects.js";
 import {isTomorrow, isThisWeek, isToday, compareAsc, isFuture } from "date-fns";
-import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodo,  displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton } from "./DOMHandler.js";
+import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodo,  displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton, selectButton, unselectButton } from "./DOMHandler.js";
 
 
 (function init (){
@@ -22,6 +22,7 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
     clickHandler.removeTaskEventListener();
     clickHandler.checkboxEventListener();
     clickHandler.importantTaskEventListener()
+    clickHandler.navigationButtonsEventListeners();
     createSortButton();
     clickHandler.sortButtonEventListener(defaultProject.getAllTodos(), dates.sortAscending(defaultProject.getAllTodos()), dates.sortPriority(defaultProject.getAllTodos()), false);
 
@@ -58,7 +59,24 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates, proj
         clickHandler.projectsEventListener();
         clickHandler.editProjectEventListener();
         clickHandler.removeProjectEventListener();
+        clickHandler.navigationButtonsEventListeners();
     }
+
+    const navigationButtonsEventListeners = (function () {
+        const buttons = document.querySelectorAll(".dates button");
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                buttons.forEach((unselectedButton) => {
+                    unselectButton(unselectedButton);
+                })
+                selectButton(button);
+                const projectdiv = document.querySelector(".projects .selected")
+                if (projectdiv) {
+                    unselectButton(projectdiv);
+                }
+            })
+        })
+    })();
 
 
     
@@ -251,6 +269,27 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         sortButtonEventListener(currentProject.getAllTodos(), dates.sortAscending(currentProject.getAllTodos()), dates.sortPriority(currentProject.getAllTodos()), false);
         isInProject = true;
         currentProjectIndex = projectIndex;
+    }
+
+    const navigationButtonsEventListeners = function () {
+        if (!(document.querySelector("nav .selected"))) {
+            const firstProject = projectsHandler.getFirstProject();
+            const firstSelection = document.querySelector(`.project-div[data-index="${firstProject.index}"]`);
+            selectButton(firstSelection );
+        }
+        const buttons = document.querySelectorAll(".project-nav");
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                buttons.forEach((selectedButton) => {
+                    unselectButton(selectedButton.parentElement);
+                })
+                selectButton(button.parentElement);
+                const selectedSection = document.querySelector(".dates .selected");
+                if (selectedSection) {
+                    unselectButton(selectedSection);
+                }
+            })
+        })
     }
 
     const editProjectEventListener = function () {
@@ -452,7 +491,7 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
 
 
 
-    return {projectsEventListener, expandButtonsListener, getCurrentProject,  getCurrentProjectIndex, editTaskEventListener, handleProjectSwitch, getCurrentTodoIndex, editProjectEventListener, getEditedProject, removeProjectEventListener, removeTaskEventListener, checkboxEventListener, importantTaskEventListener, sortButtonEventListener, ifInProject, setIfInProject, displaySortedTasks }
+    return {projectsEventListener, expandButtonsListener, getCurrentProject,  getCurrentProjectIndex, editTaskEventListener, handleProjectSwitch, getCurrentTodoIndex, editProjectEventListener, getEditedProject, removeProjectEventListener, removeTaskEventListener, checkboxEventListener, importantTaskEventListener, sortButtonEventListener, ifInProject, setIfInProject, displaySortedTasks, navigationButtonsEventListeners }
     
 
 }

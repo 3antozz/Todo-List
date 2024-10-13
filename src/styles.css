@@ -23,6 +23,7 @@
   
   input, button, textarea, select {
     font: inherit;
+    color: inherit;
   }
   
   p, h1, h2, h3, h4, h5, h6 {
@@ -53,7 +54,7 @@
 
   nav {
     background-color: rgb(236, 236, 229);
-    padding-top: 2rem;
+    padding-top: 1rem;
   }
   nav h3 {
     border-radius: 10px;
@@ -68,9 +69,14 @@
   }
 
 
+  .project-div:hover {
+    background-color: blueviolet;
+    color: white;
+    scale: 1.02;
+  }
+
   .project-div button:hover {
-    background-color: orange;
-    scale: 1.1;
+    scale: 1.15;
   }
 
   .top-nav {
@@ -102,13 +108,29 @@
 
   .projects h3:first-child {
     text-align: center;
+    font-size: 1.5rem;
   }
   
 
   .dates {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .dates button {
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 0.5rem 0.5rem;
+    border: none;
+    background-color: rgba(255, 255, 255, 0);
+  }
+
+  .dates button:hover {
+    background-color: blueviolet;
+    color: white;
+    scale: 1.1;
   }
 
 
@@ -157,6 +179,11 @@
 
   .project-remove-button {
     font-size: 1.3rem;
+  }
+
+  .selected {
+    background-color: blueviolet !important;
+    color: white;
   }
 
 
