@@ -63,6 +63,16 @@
     align-items: center;
   }
 
+  .switch-theme {
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+  }
+
+  .switch-theme svg {
+    width: 2rem;
+  }
+
   main {
     flex: 1;
     display: grid;
@@ -73,6 +83,8 @@
     background-color: rgb(236, 236, 229);
     padding-top: 1rem;
   }
+
+
   nav h3 {
     border-radius: 10px;
     padding: 0.5rem 1rem;
@@ -83,6 +95,16 @@
     padding: 0.5rem 0.5rem;
     border: none;
     background-color: rgba(255, 255, 255, 0);
+  }
+
+  .projects h3 svg {
+    width: 2rem;
+    margin-right: 0.4rem;
+  }
+
+  .projects h3 {
+    display: flex;
+    justify-content: center;
   }
 
 
@@ -110,6 +132,12 @@
     border: none;
   }
 
+
+  .project-name svg {
+    width: 2rem;
+    margin-right: 0.4rem;
+  }
+
   .top-nav button:hover {
     scale: 1.05;
   }
@@ -119,12 +147,12 @@
   }
 
   .project-name {
+    display: flex;
     flex: 1;
   }
 
 
   .projects h3:first-child {
-    text-align: center;
     font-size: 1.5rem;
   }
   
@@ -136,10 +164,22 @@
   }
 
   .dates button {
+    display: flex;
+    padding-left: 15%;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    align-items: center;
+  }
+
+  .dates button svg {
+    width: 2rem;
+    margin-right: 0.4rem;
+  }
+
+  .dates button {
     font-size: 1.3rem;
     font-weight: bold;
     border-radius: 10px;
-    padding: 0.5rem 0.5rem;
     border: none;
     background-color: rgba(255, 255, 255, 0);
   }
@@ -201,6 +241,7 @@
   .selected {
     background-color: blueviolet !important;
     color: white;
+    fill: white;
   }
 
 
