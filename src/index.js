@@ -1,7 +1,7 @@
 import "./styles.css";
 import {Project, Todo, handleProjects} from "./projects.js";
 import {isTomorrow, isThisWeek, isToday, compareAsc, isFuture } from "date-fns";
-import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodo,  displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton, selectButton, unselectButton } from "./DOMHandler.js";
+import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodo,  displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton, selectButton, unselectButton, unhighlightAllTasks, highlightTask, highlightProject, unhighlightAllProjects } from "./DOMHandler.js";
 
 (function init (){
     const projectsHandler = handleProjects();
@@ -237,11 +237,13 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates, proj
             else {
                 if (input.checkValidity()) {
                     editProject(event);
+                    unhighlightAllProjects();
                 }
             }
         });
         cancelProject.addEventListener("click", () => {
             hideProjectUI(addButton);
+            unhighlightAllProjects();
         })
     })()
 
@@ -266,6 +268,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates, proj
         });
         cancelTask.addEventListener("click", (event) => {
             hideTaskUI();
+            unhighlightAllTasks()
             if (clickHandler.ifInProject()) {
                 showAddTaskButton();
             }
@@ -299,7 +302,7 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         const projectHeaders = document.querySelectorAll(".project-nav");
         projectHeaders.forEach((project) => {
             project.addEventListener("click", (event) => {
-                currentProjectIndex = event.target.dataset.index;
+                currentProjectIndex = event.currentTarget.dataset.index;
                 handleProjectSwitch();
             })
         })
@@ -349,13 +352,15 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         editButtons.forEach((button) => {
             button.addEventListener("click", (event) => {
                 showProjectUI(addButton, true);
-                editProject(event.target);
-                editButtonIndex = event.target.dataset.index;
+                editProject(event.currentTarget);
+                editButtonIndex = event.currentTarget.dataset.index;
             })
         })
     }
 
     const editProject = function (button) {
+        const projectDiv = document.querySelector(`.project-div[data-index="${button.dataset.index}"]`);
+        highlightProject(projectDiv);
         const project = projectsHandler.getProject(button.dataset.index);
         const projectTitle = document.querySelector("#proj-name");
         projectTitle.value = project.name;
@@ -365,7 +370,7 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         const deleteButtons = document.querySelectorAll(".project-remove-button");
         deleteButtons.forEach((button) => {
             button.addEventListener("click", (event) => {
-                removeProject(event.target);
+                removeProject(event.currentTarget);
             })
         })
     }
@@ -405,7 +410,7 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         const todoButtons = document.querySelectorAll(".expand");
         todoButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
-            handleExpandButton(event.target);
+            handleExpandButton(event.currentTarget);
         })
     });
     }
@@ -416,7 +421,7 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         editButtons.forEach((button) => {
             button.addEventListener("click", (event) => {
                 showTaskUI(true);
-                editTask(event.target);
+                editTask(event.currentTarget);
             })
         })
     }
@@ -424,6 +429,8 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
     const editTask = function (button) {
         currentTodoIndex = button.dataset.index;
         currentProjectIndex = button.dataset.projectIndex;
+        const todoDiv = document.querySelector(`.todo[data-index="${button.dataset.index}"][data-project-index="${button.dataset.projectIndex}"]`);
+        highlightTask(todoDiv);
         const todo = projectsHandler.getProject(button.dataset.projectIndex).getTodo(button.dataset.index);
         const priorityValue = todo.priority;
         const radio = document.querySelector(`#${priorityValue}`);
@@ -440,7 +447,7 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         const removeButtons = document.querySelectorAll(".task-remove");
         removeButtons.forEach ((button) => {
             button.addEventListener("click", (event) => {
-                removeTask(event.target)
+                removeTask(event.currentTarget)
             })
         })
     }
@@ -458,7 +465,7 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         const importantButton = document.querySelectorAll(".important-button");
         importantButton.forEach((button) => {
             button.addEventListener("click", (event) => {
-                importanceSwitch(event.target);
+                importanceSwitch(event.currentTarget);
             })
         })
     }
