@@ -146,7 +146,7 @@ const displayTodo = function (project, todo, index, addRightDiv = true ) {
 
     if (isValid(new Date(todo.dueDate))) {
         const formattedDate = format(new Date (todo.dueDate), "dd/MM/yyyy");
-        datePara.textContent = formattedDate;
+        datePara.textContent = `Due: ${formattedDate}`;
     }
 
     else {
@@ -197,7 +197,6 @@ const unselectButton = (button) => button.classList.remove("selected");
 
 
 const expandTodo = function (todoDiv, project, todoIndex, button) {
-    // const initialDiv = todoDiv.querySelector(".initial");
     const detailDiv = document.createElement("div");
     detailDiv.classList.add("detail");
 
@@ -207,13 +206,19 @@ const expandTodo = function (todoDiv, project, todoIndex, button) {
 
     const detailPara = document.createElement("p");
     detailPara.classList.add("task-description");
-    detailPara.textContent = project.getTodo(todoIndex).description;
+    if (project.getTodo(todoIndex).description != "") {
+        detailPara.innerHTML = `<strong>Description:</strong> ${project.getTodo(todoIndex).description}`;
+    }
+    else {
+        detailPara.textContent = project.getTodo(todoIndex).description;
+    }
+
 
     detailDiv.append(priorityPara, detailPara);
     todoDiv.appendChild(detailDiv);
 
     button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>triangle</title><path d="M1,21H23L12,2" /></svg>`;
-    button.style.fill = "red";
+    button.classList.add("important-task");
 
     todoDiv.classList.add("expanded");
 }
@@ -223,7 +228,7 @@ const retractTodo = function (todoDiv, button) {
     detail.remove();
 
     button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>triangle-down</title><path d="M1 3H23L12 22" /></svg>`;
-    button.style.fill = "rgb(0, 0, 0)";
+    button.classList.remove("important-task");
     todoDiv.classList.remove("expanded");
 }
 
@@ -234,12 +239,12 @@ const removeTodo = function (projectIndex, todoIndex) {
 
 const markImportant = function (starDiv) {
     starDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>star</title><path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></svg>`
-    starDiv.style.fill = "red";
+    starDiv.classList.add("important-task");
 }
 
 const unmarkImportant = function (starDiv) {
     starDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>star-outline</title><path d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" /></svg>`;
-    starDiv.style.fill = "rgb(0, 0, 0)";
+    starDiv.classList.remove("important-task");
 }
 
 const highlightTask = function (todoDiv) {
