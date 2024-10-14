@@ -3,7 +3,6 @@ import {Project, Todo, handleProjects} from "./projects.js";
 import {isTomorrow, isThisWeek, isToday, compareAsc, isFuture } from "date-fns";
 import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTodo,  displayAllTodos, expandTodo, retractTodo, removeTodo, showProjectUI, hideProjectUI, showTaskUI, hideTaskUI, clearTodos, setProjectHeaderName, hideAddTaskButton, showAddTaskButton, markImportant, unmarkImportant, createSortButton, clearSortButton, switchSortButton, selectButton, unselectButton } from "./DOMHandler.js";
 
-
 (function init (){
     const projectsHandler = handleProjects();
 
@@ -688,7 +687,7 @@ function sortDates (projectsHandler) {
         const AllTasks = projectsHandler.getAllUncompletedTasks();
 
         const upcomingTasks = AllTasks.filter((task) => {
-            return isFuture(task.dueDate);
+            return isFuture(task.dueDate) || isToday(task.dueDate);
         })
 
         return upcomingTasks;
