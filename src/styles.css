@@ -38,13 +38,17 @@
     --bckgrnd-clr: white;
     --txt-clr: black;
     --highlight-clr: orange;
+    --nav-color: beige;
+    --svg-hover: white;
   }
 
 
   :root.dark {
-    --bckgrnd-clr: #1b1b1b;
+    --bckgrnd-clr: rgb(66, 66, 66);
     --txt-clr: white;
     --highlight-clr: grey;
+    --nav-color: #1b1b1b;
+    --svg-hover: white;
   }
   
 
@@ -59,7 +63,7 @@
 
   header {
     padding: 1rem;
-    background-color: beige;
+    background-color: var(--nav-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -83,7 +87,7 @@
   }
 
   nav {
-    background-color: rgb(236, 236, 229);
+    background-color: var(--nav-color);
     padding-top: 1rem;
   }
 
@@ -135,6 +139,7 @@
   .project-name svg {
     width: 2rem;
     margin-right: 0.4rem;
+    fill: var(--txt-clr);
   }
 
   .top-nav button:hover {
@@ -164,6 +169,12 @@
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     align-items: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-radius: 10px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    fill: var(--txt-clr);
   }
 
   .dates button svg {
@@ -171,18 +182,12 @@
     margin-right: 0.4rem;
   }
 
-  .dates button {
-    font-size: 1.3rem;
-    font-weight: bold;
-    border-radius: 10px;
-    border: none;
-  }
 
   .dates button:hover {
     background-color: var(--highlight-clr);
-    color: white;
-    scale: 1.05;
-    fill: white;
+    color: var(--svg-hover);
+    scale: 1.04;
+    fill: var(--svg-hover);
   }
 
 
@@ -248,8 +253,8 @@
 
   .selected {
     background-color: var(--highlight-clr) !important;
-    color: white;
-    fill: white;
+    color: var(--svg-hover);
+    fill: var(--svg-hover) !important;
   }
 
 
@@ -292,15 +297,16 @@
   .expand {
     padding: 0;
     line-height: normal;
-    margin-left: 1rem;
+    margin-left: 2%;
     font-size: 1.3rem;
     background-color: rgba(128, 128, 128, 0);
     border: none;
-    width: 1.2rem;
-    margin-right: 30%;
+    width: 1rem;
+    vertical-align: middle;
   }
 
-  .edit, .task-remove, .important-button  {
+
+  .edit, .task-remove, .important-button {
     padding: 0;
     line-height: normal;
     margin-left: 1rem;
@@ -311,6 +317,11 @@
     width: 1.8rem;
   }
 
+  .important-button {
+    margin-right: 10%;
+  }
+
+
 
   .expand, .edit, .task-remove, .important-button {
     fill: rgba(128, 128, 128, 0.7);
@@ -318,11 +329,16 @@
 
   .info svg:hover  {
     scale: 1.8;
-    fill: red;
+    fill: black;
   }
 
   .todo button:first-of-type svg:hover {
     scale: 1.2;
+    fill: red;
+  }
+
+  .todo button:nth-of-type(2) svg:hover {
+    fill: red;
   }
 
   .info {
@@ -332,6 +348,7 @@
   .info label {
     font-weight: bold;
     font-size: 1.5rem;
+    vertical-align: middle;
   }
 
   .expand:hover {
@@ -358,7 +375,7 @@
   }
 
   .todo:hover {
-    border: 3px solid orange;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.7);
   }
 
   .initial {
@@ -385,6 +402,7 @@
 
   .important-task {
     fill: red;
+    scale: 1.5;
   }
 
   .due-date {
@@ -424,21 +442,21 @@
 
   footer {
     text-align: center;
-    background-color: beige;
+    background-color: var(--nav-color);
     padding: 0.3rem;
     font-weight: bold;
   }
 
   .low {
-    background-color: rgba(255, 192, 203, 0.536);
+    background-color: rgba(255, 192, 203, 0.5);
   }
 
   .normal {
-    background-color: rgba(64, 224, 208, 0.448);
+    background-color: rgba(64, 224, 208, 0.4);
   }
 
   .high {
-    background-color: rgba(255, 0, 0, 0.459);
+    background-color: rgba(255, 0, 0, 0.3);
   }
 
 

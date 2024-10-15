@@ -164,7 +164,7 @@ const displayTodo = function (project, todo, index, addRightDiv = true ) {
     }
 
     rightDiv.appendChild(priorityPara);
-    infoDiv.append(label, expandButton, editButton, removeButton, important, datePara);
+    infoDiv.append(label, expandButton, important, editButton, removeButton, datePara);
 
     checkboxDiv.append(input);
 
