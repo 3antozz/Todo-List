@@ -87,7 +87,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates, proj
     const addButton = document.querySelector(".add-project");
     const input = document.querySelector("#proj-name");
     const confirmTask = document.querySelector(".confirm");
-    const cancelTask = document.querySelector(".add-task-ui button:not(:first-of-type)");
+    const cancelTask = document.querySelector(".cancel-task");
     const titleInput = document.querySelector("#task-name");
     const descInput = document.querySelector("#task-desc");
     const dateInput = document.querySelector("#task-date");

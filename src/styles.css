@@ -64,7 +64,7 @@
     --focus-clr: red;
     --dynamic-btn-clr: rgba(255, 255, 255, 0.4);
     --high: rgba(255, 107, 107, 0.5);
-    --normal: rgba(146, 131, 245, 0.5);
+    --normal: rgba(168, 157, 234, 0.5);
     --low: rgba(200, 209, 220, 0.5);
     --date: rgba(255, 255, 255, 0.7);
     --sort: rgba(128, 128, 128, 0.7);
@@ -206,7 +206,7 @@
   .dates {
     display: flex;
     flex-direction: column;
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.4rem;
   }
 
   .dates button {
@@ -383,6 +383,11 @@
     display: inline-block;
     vertical-align: middle;
     fill: red;
+  }
+
+  .add-task-ui > div {
+    display: flex;
+    flex-direction: column;
   }
 
 

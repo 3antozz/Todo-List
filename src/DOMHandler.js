@@ -328,7 +328,7 @@ const showTaskUI = function (edit = false) {
     }
     const addUi = document.querySelector(".add-task-ui");
     hideAddTaskButton();
-    addUi.style.display = "block";
+    addUi.style.display = "flex";
 }
 
 const hideTaskUI = function () {
