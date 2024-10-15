@@ -40,15 +40,35 @@
     --highlight-clr: orange;
     --nav-color: beige;
     --svg-hover: white;
+    --input-txt: black;
+    --input-clr: white;
+    --focus-clr: black;
+    --dynamic-btn-clr: rgba(128, 128, 128, 0.7);
+    --high: rgba(238, 10, 10, 0.4);
+    --normal: rgba(0, 0, 255, 0.3);
+    --low: rgba(200, 209, 220, 0.5);
+    --date: rgba(128, 128, 128, 1);
+    --sort: beige;
+    --complete: lightgreen;
   }
 
 
   :root.dark {
     --bckgrnd-clr: rgb(66, 66, 66);
     --txt-clr: white;
-    --highlight-clr: grey;
+    --highlight-clr: rgba(128, 128, 128, 0.7);
     --nav-color: #1b1b1b;
     --svg-hover: white;
+    --input-txt: white;
+    --input-clr: rgb(66, 66, 66);
+    --focus-clr: red;
+    --dynamic-btn-clr: rgba(255, 255, 255, 0.4);
+    --high: rgba(255, 107, 107, 0.5);
+    --normal: rgba(146, 131, 245, 0.5);
+    --low: rgba(200, 209, 220, 0.5);
+    --date: rgba(255, 255, 255, 0.7);
+    --sort: rgba(128, 128, 128, 0.7);
+    --complete: rgba(144, 238, 144, 0.6);
   }
   
 
@@ -69,15 +89,40 @@
     align-items: center;
   }
 
+  .top-nav button {
+    background-color: var(--sort);
+  }
+
+  header button {
+    background-color: var(--bckgrnd-clr);
+  }
+
   .switch-theme {
     display: flex;
     align-items: center;
     border-radius: 10px;
     font-weight: bold;
+    border: 1px solid var(--txt-clr);
   }
+
 
   .switch-theme svg {
     width: 2rem;
+    fill: var(--txt-clr);
+  }
+
+  .sort-button {
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    font-weight: bold;
+    border: 1px solid var(--txt-clr);
+  }
+
+  .sort-button svg {
+    width: 2rem;
+    fill: var(--txt-clr);
+    margin-right: 0.3rem;
   }
 
   main {
@@ -88,7 +133,7 @@
 
   nav {
     background-color: var(--nav-color);
-    padding-top: 1rem;
+    padding-top: 0.7rem;
   }
 
 
@@ -129,15 +174,14 @@
 
   .top-nav button {
     margin-right: 10rem;
-    padding: 0.5rem 3rem;
+    padding: 0.5rem 0.5rem;
     font-weight: bold;
     border-radius: 10px;
-    border: none;
   }
 
 
   .project-name svg {
-    width: 2rem;
+    width: 2.5rem;
     margin-right: 0.4rem;
     fill: var(--txt-clr);
   }
@@ -149,11 +193,13 @@
   .project-name {
     display: flex;
     flex: 1;
+    font-size: 2rem;
   }
 
 
   .projects h3:first-child {
     font-size: 1.5rem;
+    fill: var(--txt-clr);
   }
   
 
@@ -194,7 +240,6 @@
   .projects {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
   }
 
   .add-project {
@@ -210,9 +255,15 @@
   .add-project-ui {
     order: 1;
     display: none;
-    padding: 1rem;
+    padding: 0.4rem 1.1rem;
     flex-direction: column;
-    align-items: center;
+  }
+
+  .add-project svg {
+    width: 3rem;
+    display: inline-block;
+    vertical-align: middle;
+    fill: red;
   }
 
   .project-div {
@@ -232,9 +283,10 @@
     align-items: center;
     flex: 1;
     font-weight: bold;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     padding: 0.5rem;
     text-align: left;
+    padding-left: 1rem;
   }
 
 
@@ -242,7 +294,7 @@
     width: 1.4rem;
     padding: 0;
     margin-right: 0.7rem;
-    fill: grey;
+    fill: var(--dynamic-btn-clr);
   }
 
   .project-edit-button:hover, .project-remove-button:hover {
@@ -251,16 +303,8 @@
   }
 
 
-  .selected {
-    background-color: var(--highlight-clr) !important;
-    color: var(--svg-hover);
-    fill: var(--svg-hover) !important;
-  }
-
-
-
   .add-project:hover {
-    background-color: orange;
+    background-color: rgba(255, 166, 0, 0.576);
     border-radius: 10px;
   }
 
@@ -268,7 +312,55 @@
     border-radius: 5px;
     outline: none;
     border: 1px solid black;
+    padding: 0.2rem 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--input-txt);
+    background-color: var(--input-clr);
   }
+
+  .add-project-ui input::placeholder {
+    color: rgba(128, 128, 128, 0.5);
+  }
+
+  .add-project-ui input:focus {
+    box-shadow: inset 1px 1px 1px 1px var(--focus-clr);
+  }
+
+  .add-project-ui input:hover {
+    scale: 1.02;
+  }
+
+  .form-buttons button {
+    padding: 0.2rem 0.5rem;
+    flex: 1;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+
+  .form-buttons button:hover {
+    scale: 1.1;
+  }
+
+  .form-buttons button:active {
+    scale: 1.2;
+  }
+
+  .confirm-project {
+    background-color: rgba(0, 128, 0, 0.4);
+  }
+
+  .form-buttons button:nth-child(2) {
+    background-color: rgba(255, 0, 0, 0.4);
+  }
+
+  .form-buttons {
+    display: flex;
+    flex: 1;
+    gap: 0.7rem;
+  }
+
 
   .add-task {
     order: 1;
@@ -276,12 +368,21 @@
     background-color: rgba(255, 255, 255, 0);
     border: none;
     font-size: 1.2rem;
+    font-weight: bold;
     padding: 1rem;
+    border-radius: 10px;
   }
 
   .add-task-ui {
     order: 1;
     display: none;
+  }
+
+  .add-task svg {
+    width: 3rem;
+    display: inline-block;
+    vertical-align: middle;
+    fill: red;
   }
 
 
@@ -324,7 +425,7 @@
 
 
   .expand, .edit, .task-remove, .important-button {
-    fill: rgba(128, 128, 128, 0.7);
+    fill: var(--dynamic-btn-clr);
   }
 
   .info svg:hover  {
@@ -354,6 +455,7 @@
   .expand:hover {
     scale: 1.3;
   }
+
 
 
   .todos {
@@ -394,21 +496,21 @@
     margin-right: 4rem;
     font-size: 1.5rem;
     margin-top: 1%;
+    font-weight: bold;
   }
 
-  .completed-task {
-    background-color: lightgreen !important;
-  }
-
-  .important-task {
-    fill: red;
-    scale: 1.5;
-  }
 
   .due-date {
-    color: grey;
+    color: var(--date);
     font-size: 1.1rem;
     font-weight: bold;
+  }
+
+  .right svg {
+    width: 2rem;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.4rem;
   }
 
 
@@ -448,21 +550,37 @@
   }
 
   .low {
-    background-color: rgba(255, 192, 203, 0.5);
+    background-color: var(--low);
   }
 
   .normal {
-    background-color: rgba(64, 224, 208, 0.4);
+    background-color: var(--normal);
   }
 
   .high {
-    background-color: rgba(255, 0, 0, 0.3);
+    background-color: var(--high);
   }
 
+  .selected {
+    background-color: var(--highlight-clr) !important;
+    color: var(--svg-hover);
+    fill: var(--svg-hover) !important;
+  }
 
   .edited {
     border : 5px solid red;
   }
+
+  .completed-task {
+    background-color: var(--complete);
+  }
+
+  .important-task {
+    fill: red;
+    scale: 1.5;
+  }
+
+  
 
 
 
