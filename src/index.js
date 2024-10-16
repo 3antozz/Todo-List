@@ -349,10 +349,12 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
     const editProjectEventListener = function () {
         const editButtons = document.querySelectorAll(".project-edit-button");
         const addButton = document.querySelector(".add-project");
+        const addProjectUi = document.querySelector(".add-project-ui");
         editButtons.forEach((button) => {
             button.addEventListener("click", (event) => {
                 showProjectUI(addButton, true);
                 editProject(event.currentTarget);
+                addProjectUi.scrollIntoView({ behavior: 'smooth' });
                 editButtonIndex = event.currentTarget.dataset.index;
             })
         })
@@ -418,10 +420,12 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
 
     const editTaskEventListener = function () {
         const editButtons = document.querySelectorAll(".edit");
+        const addTaskUI = document.querySelector(".add-task-ui");
         editButtons.forEach((button) => {
             button.addEventListener("click", (event) => {
                 showTaskUI(true);
                 editTask(event.currentTarget);
+                addTaskUI.scrollIntoView({ behavior: 'smooth' });
             })
         })
     }
