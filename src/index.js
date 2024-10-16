@@ -554,7 +554,6 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         removeTaskEventListener();
         checkboxEventListener();
         importantTaskEventListener();
-        hideTaskUI();
         if (addRightDiv) {
             hideAddTaskButton();
         }

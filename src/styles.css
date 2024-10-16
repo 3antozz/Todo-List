@@ -55,6 +55,7 @@
     --placeholder-clr: rgba(128, 128, 128, 0.5);
     --confirm: rgba(0, 128, 0, 0.4);
     --cancel: rgba(255, 0, 0, 0.4);
+    --input-bckgrnd-clr: white;
   }
 
 
@@ -79,6 +80,7 @@
     --placeholder-clr: rgba(255, 255, 255, 0.377);
     --confirm: rgba(0, 128, 0, 0.9);
     --cancel: rgba(255, 0, 0, 0.7);
+    --input-bckgrnd-clr: var(--sort);
   }
   
 
@@ -409,7 +411,7 @@
     font-size: 1.2rem;
     font-weight: 500;
     color: var(--input-txt);
-    background-color: var(--sort);
+    background-color: var(--input-bckgrnd-clr);
   }
 
   .add-task-ui input::placeholder {
@@ -433,7 +435,7 @@
     font-size: 1.2rem;
     font-weight: 500;
     color: var(--input-txt);
-    background-color: var(--sort);
+    background-color: var(--input-bckgrnd-clr);
     flex: 1;
   }
   textarea::placeholder {
@@ -465,6 +467,7 @@
 
   .radios {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
   }
 
@@ -473,7 +476,7 @@
   }
 
   .radio {
-    text-align: right;
+    text-align: center;
   }
 
 
@@ -686,7 +689,9 @@
   }
 
   .add-task-ui label {
+    display: inline-block;
     font-weight: bold;
+    min-width: 4rem;
   }
 
   .text {
