@@ -740,7 +740,9 @@ function sortDates (projectsHandler) {
             if (task2.priorityValue !== task1.priorityValue) {
                 return task2.priorityValue - task1.priorityValue;
             }
-
+            if (task1.dueDate === "No Due Date" && task2.dueDate === "No Due Date") return task2.priorityValue - task1.priorityValue;
+            if (task1.dueDate === "No Due Date") return 1; 
+            if (task2.dueDate === "No Due Date") return -1;
             return compareAsc(new Date(task1.dueDate), new Date(task2.dueDate));
         })
         return sortedTasks;
