@@ -218,12 +218,14 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates, proj
     })();
 
     const addTaskButtonHandler = (function () {
+        const addTaskUI = document.querySelector(".add-task-ui");
         addTaskButton.addEventListener("click", () => {
             titleInput.value = "";
             descInput.value = "";
             dateInput.value = "";
             radioButtons[1].checked = true;
             showTaskUI();
+            addTaskUI.scrollIntoView({ behavior: 'smooth' });
         })
     })();
 

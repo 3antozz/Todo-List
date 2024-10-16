@@ -37,7 +37,7 @@
   :root.light {
     --bckgrnd-clr: white;
     --txt-clr: black;
-    --highlight-clr: orange;
+    --highlight-clr: rgba(255, 166, 0, 1);
     --nav-color: beige;
     --svg-hover: white;
     --input-txt: black;
@@ -50,6 +50,11 @@
     --date: rgba(128, 128, 128, 1);
     --sort: beige;
     --complete: lightgreen;
+    --todo-hover: rgba(0, 0, 0, 0.7);
+    --add-task: rgb(241, 239, 239);
+    --placeholder-clr: rgba(128, 128, 128, 0.5);
+    --confirm: rgba(0, 128, 0, 0.4);
+    --cancel: rgba(255, 0, 0, 0.4);
   }
 
 
@@ -69,6 +74,11 @@
     --date: rgba(255, 255, 255, 0.7);
     --sort: rgba(128, 128, 128, 0.7);
     --complete: rgba(144, 238, 144, 0.6);
+    --todo-hover: rgba(255, 255, 255, 1);
+    --add-task: rgba(128, 128, 128, 0.7);
+    --placeholder-clr: rgba(255, 255, 255, 0.377);
+    --confirm: rgba(0, 128, 0, 0.9);
+    --cancel: rgba(255, 0, 0, 0.7);
   }
   
 
@@ -89,9 +99,6 @@
     align-items: center;
   }
 
-  .top-nav button {
-    background-color: var(--sort);
-  }
 
   header button {
     background-color: var(--bckgrnd-clr);
@@ -168,15 +175,16 @@
 
   .top-nav {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
   }
 
-  .top-nav button {
+  .sort-button {
     margin-right: 10rem;
     padding: 0.5rem 0.5rem;
     font-weight: bold;
     border-radius: 10px;
+    background-color: var(--sort);
   }
 
 
@@ -186,13 +194,12 @@
     fill: var(--txt-clr);
   }
 
-  .top-nav button:hover {
-    scale: 1.05;
+  .sort-button:hover {
+    scale: 1.1;
   }
 
   .project-name {
     display: flex;
-    flex: 1;
     font-size: 2rem;
   }
 
@@ -309,9 +316,10 @@
   }
 
   .add-project-ui input {
+    width: 100%;
     border-radius: 5px;
     outline: none;
-    border: 1px solid black;
+    border: 1px solid var(--txt-clr);
     padding: 0.2rem 0.5rem;
     margin-bottom: 0.5rem;
     font-size: 1.2rem;
@@ -321,7 +329,7 @@
   }
 
   .add-project-ui input::placeholder {
-    color: rgba(128, 128, 128, 0.5);
+    color: var(--placeholder-clr);
   }
 
   .add-project-ui input:focus {
@@ -347,12 +355,12 @@
     scale: 1.2;
   }
 
-  .confirm-project {
-    background-color: rgba(0, 128, 0, 0.4);
+  .confirm-project, .confirm {
+    background-color: var(--confirm);
   }
 
-  .form-buttons button:nth-child(2) {
-    background-color: rgba(255, 0, 0, 0.4);
+  .form-buttons button:nth-child(2), .cancel-task {
+    background-color: var(--cancel);
   }
 
   .form-buttons {
@@ -363,7 +371,6 @@
 
 
   .add-task {
-    order: 1;
     text-align: left;
     background-color: rgba(255, 255, 255, 0);
     border: none;
@@ -376,6 +383,8 @@
   .add-task-ui {
     order: 1;
     display: none;
+    gap: 1rem;
+    justify-content: center;
   }
 
   .add-task svg {
@@ -388,6 +397,83 @@
   .add-task-ui > div {
     display: flex;
     flex-direction: column;
+  }
+
+
+  .add-task-ui input {
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid var(--txt-clr);
+    padding: 0.2rem 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--input-txt);
+    background-color: var(--sort);
+  }
+
+  .add-task-ui input::placeholder {
+    color: var(--placeholder-clr);
+  }
+
+  .add-task-ui input[type="text"]:focus {
+    box-shadow: inset 1px 1px 1px 1px var(--focus-clr);
+  }
+
+  .add-task-ui input[type="text"]:hover {
+    scale: 1.02;
+  }
+
+  textarea {
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid var(--txt-clr);
+    padding: 0.2rem 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--input-txt);
+    background-color: var(--sort);
+    flex: 1;
+  }
+  textarea::placeholder {
+    color: var(--placeholder-clr);
+  }
+
+  textarea:focus {
+    box-shadow: inset 1px 1px 1px 1px var(--focus-clr);
+  }
+
+  textarea:hover {
+    scale: 1.02;
+  }
+
+
+  .add-task-ui button {
+    padding: 0.2rem 0.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+
+  .add-task-ui button:hover {
+    scale: 1.1;
+  }
+
+  .add-task-ui button:active {
+    scale: 1.2;
+  }
+
+  .radios {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .radios h2 {
+    align-content: center;
+  }
+
+  .radio {
+    text-align: right;
   }
 
 
@@ -482,7 +568,7 @@
   }
 
   .todo:hover {
-    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.7);
+    box-shadow: 0px 0px 5px 1px var(--todo-hover);
   }
 
   .initial {
@@ -498,7 +584,6 @@
   }
 
   .todo .right {
-    margin-right: 4rem;
     font-size: 1.5rem;
     margin-top: 1%;
     font-weight: bold;
@@ -516,6 +601,11 @@
     display: inline-block;
     vertical-align: middle;
     margin-right: 0.4rem;
+    fill: var(--txt-clr);
+  }
+
+  .right p {
+    text-align: left;
   }
 
 
@@ -524,7 +614,7 @@
   }
 
   .add-task:hover {
-    background-color: rgb(241, 239, 239);
+    background-color: var(--add-task);
   }
 
   .todo input {
@@ -581,9 +671,60 @@
   }
 
   .important-task {
-    fill: red;
+    fill: yellow;
     scale: 1.5;
   }
+
+
+  input[type="radio"]{
+    scale: 1.6;
+    margin-left: 4px;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(17%) sepia(86%) saturate(7492%) hue-rotate(0deg) brightness(94%) contrast(116%);
+  }
+
+  .add-task-ui label {
+    font-weight: bold;
+  }
+
+  .text {
+    width: min(25rem, 45rem);
+  }
+
+  input[type="checkbox"]{
+    appearance: none;
+    background-color: white;
+    width: 1rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    position: relatve;
+  }
+
+
+  input[type="checkbox"]::before {
+    display: block;
+    content: "✔";
+    color: green;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    visibility: hidden;
+    position: relative;
+    bottom: 40%;
+  }
+
+  input[type="checkbox"]:checked::before {
+    visibility: visible;
+  }
+
+
+
+
+
+
+
 
   
 
