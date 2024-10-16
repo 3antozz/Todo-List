@@ -52,7 +52,7 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
     clickHandler.importantTaskEventListener()
     clickHandler.navigationButtonsEventListeners();
     createSortButton();
-    clickHandler.sortButtonEventListener(defaultProject.getAllTodos(), dates.sortAscending(defaultProject.getAllTodos()), dates.sortPriority(defaultProject.getAllTodos()), false);
+    clickHandler.sortButtonEventListener(defaultProject.getUncompleteTodos(), dates.sortAscending(defaultProject.getUncompleteTodos()), dates.sortPriority(defaultProject.getUncompleteTodos()), false);
 })();
 
 (function themeSwitcher () {
@@ -173,7 +173,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates, proj
         createTaskButtonsEventListeners();
         clearSortButton();
         createSortButton();
-        clickHandler.sortButtonEventListener(currentProject.getAllTodos(), dates.sortAscending(currentProject.getAllTodos()), dates.sortPriority(currentProject.getAllTodos()), false);
+        clickHandler.sortButtonEventListener(currentProject.getUncompleteTodos(), dates.sortAscending(currentProject.getUncompleteTodos()), dates.sortPriority(currentProject.getUncompleteTodos()), false);
     }
 
     const editTodo = function (event) {
@@ -205,7 +205,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates, proj
         hideTaskUI();
         clearSortButton();
         createSortButton();
-        clickHandler.sortButtonEventListener(currentProject.getAllTodos(), dates.sortAscending(currentProject.getAllTodos()), dates.sortPriority(currentProject.getAllTodos()), false);
+        clickHandler.sortButtonEventListener(currentProject.getUncompleteTodos(), dates.sortAscending(currentProject.getUncompleteTodos()), dates.sortPriority(currentProject.getUncompleteTodos()), false);
     }
 
 
@@ -320,7 +320,7 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         checkboxEventListener();
         importantTaskEventListener();
         hideTaskUI();
-        sortButtonEventListener(currentProject.getAllTodos(), dates.sortAscending(currentProject.getAllTodos()), dates.sortPriority(currentProject.getAllTodos()), false);
+        sortButtonEventListener(currentProject.getUncompleteTodos(), dates.sortAscending(currentProject.getUncompleteTodos()), dates.sortPriority(currentProject.getUncompleteTodos()), false);
         isInProject = true;
         currentProjectIndex = projectIndex;
     }
@@ -447,7 +447,7 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         const removeButtons = document.querySelectorAll(".task-remove");
         removeButtons.forEach ((button) => {
             button.addEventListener("click", (event) => {
-                removeTask(event.currentTarget)
+                removeTask(event.currentTarget);
             })
         })
     }
@@ -458,6 +458,7 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         removeTodo(projectIndex, todoIndex);
         const project = projectsHandler.getProject(projectIndex);
         project.removeTodo(todoIndex);
+        sortButtonEventListener(project.getUncompleteTodos(), dates.sortAscending(project.getUncompleteTodos()), dates.sortPriority(project.getUncompleteTodos()), false);
         updateLocalStorage (projectsHandler);
     }
 
@@ -743,7 +744,10 @@ function sortDates (projectsHandler) {
 
     const sortAscending = function (tasks) {
         const sortedTasks = tasks.toSorted((task1, task2) => {
-            return compareAsc(new Date(task1.dueDate), new Date(task2.dueDate))
+            if (task1.dueDate === "No Due Date" && task2.dueDate === "No Due Date") return task2.priorityValue - task1.priorityValue;
+            if (task1.dueDate === "No Due Date") return 1; 
+            if (task2.dueDate === "No Due Date") return -1;
+            return compareAsc(new Date(task1.dueDate), new Date(task2.dueDate));
         })
         return sortedTasks;
     }
