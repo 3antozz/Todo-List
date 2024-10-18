@@ -1,4 +1,4 @@
-import {format, isValid} from "date-fns";
+import {format, isValid, isToday} from "date-fns";
 
 const displayNavProject = function (project) {
     const colors = ["red", "blue", "green", "rgb(18, 160, 146)", "maroon", "indigo", "blueviolet" ];
@@ -146,7 +146,12 @@ const displayTodo = function (project, todo, index, addRightDiv = true ) {
 
     if (isValid(new Date(todo.dueDate))) {
         const formattedDate = format(new Date (todo.dueDate), "dd/MM/yyyy");
-        datePara.textContent = `Due: ${formattedDate}`;
+        if (isToday(new Date (todo.dueDate))) {
+            datePara.textContent = "Today";
+        }
+        else {
+            datePara.textContent = `Due: ${formattedDate}`;
+        }
     }
 
     else {
@@ -218,7 +223,7 @@ const expandTodo = function (todoDiv, project, todoIndex, button) {
     todoDiv.appendChild(detailDiv);
 
     button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Hide</title><path d="M1,21H23L12,2" /></svg>`;
-    button.classList.add("important-task");
+    button.classList.add("expanded-button");
 
     todoDiv.classList.add("expanded");
 }
@@ -228,7 +233,7 @@ const retractTodo = function (todoDiv, button) {
     detail.remove();
 
     button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Expand</title><path d="M1 3H23L12 22" /></svg>`;
-    button.classList.remove("important-task");
+    button.classList.remove("expanded-button");
     todoDiv.classList.remove("expanded");
 }
 

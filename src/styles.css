@@ -47,7 +47,7 @@
     --high: rgba(238, 10, 10, 0.4);
     --normal: rgba(0, 0, 255, 0.3);
     --low: rgba(200, 209, 220, 0.5);
-    --date: rgba(128, 128, 128, 1);
+    --date: rgb(123, 122, 122);
     --sort: beige;
     --complete: lightgreen;
     --todo-hover: rgba(0, 0, 0, 0.7);
@@ -137,7 +137,7 @@
   main {
     flex: 1;
     display: grid;
-    grid-template-columns: 1fr 4.5fr;
+    grid-template-columns: 1fr 4.2fr;
   }
 
   nav {
@@ -292,7 +292,7 @@
     align-items: center;
     flex: 1;
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     padding: 0.5rem;
     text-align: left;
     padding-left: 1rem;
@@ -498,6 +498,11 @@
     border: none;
     width: 1rem;
     vertical-align: middle;
+  }
+
+  .expanded-button {
+    fill: red !important;
+    scale: 1.5 !important;
   }
 
 

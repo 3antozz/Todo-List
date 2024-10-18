@@ -11,7 +11,7 @@ function handleProjects () {
     }
     const removeFromProjects = (projectIndex) => {
         const removedProjectIndex = projects.findIndex((project) => project.index == projectIndex) 
-        projects.splice(removedProjectIndex, 1); 
+        projects.splice(removedProjectIndex, 1);
     }
     const getAllUncompletedTasks = () => {
         const tasks = [];
@@ -75,7 +75,8 @@ class Project {
     }
 
     removeTodo (index) {
-        this.todos.splice(index, 1);
+        const removedTodoIndex = this.todos.findIndex((todo) => todo.index == index) 
+        this.todos.splice(removedTodoIndex, 1);
     }
 
     editProject (title) {
