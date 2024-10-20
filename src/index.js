@@ -14,21 +14,21 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
                 "name": "Yacine's Tasks",
                 "todos": [
                     {
-                        "title": "Kherya Guettala",
-                        "description": "Nod sba7 adrebha b kherya 3alamiya",
-                        "dueDate": "2024-10-18",
+                        "title": "TEST",
+                        "description": "Test Description",
+                        "dueDate": "2024-10-20",
                         "priority": "Normal",
                         "complete": false,
-                        "important": false,
+                        "important": true,
                         "priorityValue": 1,
                         "index": 0,
                         "projectIndex": 0
                     },
                     {
-                        "title": "Check if Meriem finally open Instagram profile",
-                        "description": "There is more chance Roza take good picture than this happening",
-                        "dueDate": "No Due Date",
-                        "priority": "Low",
+                        "title": "TEST DOS",
+                        "description": "Test Description",
+                        "dueDate": "2024-10-25",
+                        "priority": "High",
                         "complete": false,
                         "important": false,
                         "priorityValue": 0,
@@ -36,349 +36,18 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
                         "projectIndex": 0
                     },
                     {
-                        "title": "Go gym",
-                        "description": "To grow muscles so i can lift Meriem and take her to gym just in case she gets FAT",
-                        "dueDate": "No Due Date",
-                        "priority": "High",
-                        "complete": false,
-                        "important": true,
-                        "priorityValue": 2,
-                        "index": 2,
-                        "projectIndex": 0
-                    },
-                    {
-                        "title": "Eat some escalope nachef",
-                        "description": "From expert chef EL 3antoccino",
-                        "dueDate": "No Due Date",
-                        "priority": "High",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 2,
-                        "index": 3,
-                        "projectIndex": 0
-                    },
-                    {
-                        "title": "Reels Check",
-                        "description": "Check Reels then send some Andrew Tate reels to Roza and Cow dance reels to meriem (If she open instagram finally)",
-                        "dueDate": "2024-10-19",
-                        "priority": "Low",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 0,
-                        "index": 4,
-                        "projectIndex": 0
-                    },
-                    {
-                        "title": "Finish this project",
-                        "description": "Possibel complete this project? It's been almost 2 weeks",
-                        "dueDate": "2024-10-18",
-                        "priority": "Normal",
-                        "complete": false,
-                        "important": true,
-                        "priorityValue": 1,
-                        "index": 5,
-                        "projectIndex": 0
-                    },
-                    {
-                        "title": "Talk to my talking stage staff",
-                        "description": "Malak numero uno",
-                        "dueDate": "No Due Date",
-                        "priority": "Normal",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 1,
-                        "index": 6,
-                        "projectIndex": 0
-                    },
-                    {
-                        "title": "Ask meriem if she has younger brother",
-                        "description": "or sister whatever works",
-                        "dueDate": "No Due Date",
-                        "priority": "High",
-                        "complete": false,
-                        "important": true,
-                        "priorityValue": 2,
-                        "index": 7,
-                        "projectIndex": 0
-                    },
-                    {
-                        "title": "Watch Dr. House episode",
-                        "description": "I need my medical diploma",
+                        "title": "TEST THREE",
+                        "description": "Test Description",
                         "dueDate": "No Due Date",
                         "priority": "Low",
                         "complete": false,
                         "important": false,
                         "priorityValue": 0,
-                        "index": 8,
-                        "projectIndex": 0
-                    },
-                    {
-                        "title": "Kherya guettala pre-sleep",
-                        "description": "Highlight of the day",
-                        "dueDate": "No Due Date",
-                        "priority": "Normal",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 1,
-                        "index": 9,
-                        "projectIndex": 0
-                    },
-                    {
-                        "title": "Go lazer game on tuesday",
-                        "description": "Tuesday good day since those kids dont go school in afternoon",
-                        "dueDate": "2024-10-22",
-                        "priority": "Normal",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 1,
-                        "index": 10,
+                        "index": 1,
                         "projectIndex": 0
                     }
                 ],
                 "index": 0
-            },
-            {
-                "name": "Roza's Tasks",
-                "todos": [
-                    {
-                        "title": "Wake up go driving school",
-                        "description": "Today Roza have driving exam, she say she smart surely it will be piece of cake, right?",
-                        "dueDate": "2024-10-16",
-                        "priority": "High",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 2,
-                        "index": 11,
-                        "projectIndex": 1
-                    },
-                    {
-                        "title": "Fail the driving exam",
-                        "description": "Fail because policeman was black, so she thought his presence dont matter",
-                        "dueDate": "2024-10-16",
-                        "priority": "High",
-                        "complete": false,
-                        "important": true,
-                        "priorityValue": 2,
-                        "index": 12,
-                        "projectIndex": 1
-                    },
-                    {
-                        "title": "Get bullied by everyone",
-                        "description": "Why is everyone a hater ?",
-                        "dueDate": "No Due Date",
-                        "priority": "Normal",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 1,
-                        "index": 13,
-                        "projectIndex": 1
-                    },
-                    {
-                        "title": "5 stages of grief",
-                        "description": "1- Denial\n2- Anger\n3- Bargaining\n4- Depression\n5- Acceptance",
-                        "dueDate": "No Due Date",
-                        "priority": "Normal",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 1,
-                        "index": 14,
-                        "projectIndex": 1
-                    },
-                    {
-                        "title": " Check if Meriem finally open Instagram profile",
-                        "description": "There is more chance Roza dont fail driving exam than this happening",
-                        "dueDate": "No Due Date",
-                        "priority": "Low",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 0,
-                        "index": 15,
-                        "projectIndex": 1
-                    },
-                    {
-                        "title": "5 hour useless work meeting",
-                        "description": "Ah yes la headache specialidad",
-                        "dueDate": "2024-10-20",
-                        "priority": "High",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 2,
-                        "index": 16,
-                        "projectIndex": 1
-                    },
-                    {
-                        "title": "Put pressure on Yacine to finish this project",
-                        "description": "Possibel complete this project? It's been almost 2 weeks",
-                        "dueDate": "2024-10-18",
-                        "priority": "Normal",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 1,
-                        "index": 17,
-                        "projectIndex": 1
-                    },
-                    {
-                        "title": "Go Gym",
-                        "description": "So Sami regret his decision",
-                        "dueDate": "No Due Date",
-                        "priority": "High",
-                        "complete": false,
-                        "important": true,
-                        "priorityValue": 2,
-                        "index": 18,
-                        "projectIndex": 1
-                    },
-                    {
-                        "title": "Check reels",
-                        "description": "Why reels sent by Yacine so good??",
-                        "dueDate": "No Due Date",
-                        "priority": "Low",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 0,
-                        "index": 19,
-                        "projectIndex": 1
-                    },
-                    {
-                        "title": "Go Lazer game on tuesday",
-                        "description": "Tuesday good day since those kids dont go school in afternoon so Roza can be herself there (a pdf file)",
-                        "dueDate": "2024-10-22",
-                        "priority": "High",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 2,
-                        "index": 20,
-                        "projectIndex": 1
-                    }
-                ],
-                "index": 1
-            },
-            {
-                "name": "Meriem's Tasks",
-                "todos": [
-                    {
-                        "title": "Wake up Check today horoscope",
-                        "description": "Today's horoscope says pisces need to open instagram profile",
-                        "dueDate": "2024-10-18",
-                        "priority": "High",
-                        "complete": false,
-                        "important": true,
-                        "priorityValue": 2,
-                        "index": 21,
-                        "projectIndex": 2
-                    },
-                    {
-                        "title": "Choose which personality active for today",
-                        "description": "I guess the choice depends on the mood and destination",
-                        "dueDate": "2024-10-18",
-                        "priority": "High",
-                        "complete": false,
-                        "important": true,
-                        "priorityValue": 2,
-                        "index": 29,
-                        "projectIndex": "2"
-                    },
-                    {
-                        "title": "Convince herself she not toxic",
-                        "description": "Stay calm guys it's just avoidant style, not toxic at all",
-                        "dueDate": "No Due Date",
-                        "priority": "Normal",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 1,
-                        "index": 22,
-                        "projectIndex": 2
-                    },
-                    {
-                        "title": "Say to Roza and Yacine she will open instagram tomorrow",
-                        "description": "Today is unlimited for meriem since tomorrow never arrive, or maybe she exist in different time dimension",
-                        "dueDate": "2024-10-18",
-                        "priority": "Low",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 0,
-                        "index": 23,
-                        "projectIndex": 2
-                    },
-                    {
-                        "title": "Tell Roza that she's her baby",
-                        "description": "Roza looks tell you she 12 years old, but her health tell you she 12x7 years old",
-                        "dueDate": "No Due Date",
-                        "priority": "Normal",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 1,
-                        "index": 30,
-                        "projectIndex": "2"
-                    },
-                    {
-                        "title": "Go University",
-                        "description": "Dont forget to take your knife with you ",
-                        "dueDate": "No Due Date",
-                        "priority": "High",
-                        "complete": false,
-                        "important": true,
-                        "priorityValue": 2,
-                        "index": 24,
-                        "projectIndex": 2
-                    },
-                    {
-                        "title": "Use Knife for everything",
-                        "description": "Even in toilet she use knife, idk how but she does. -M(ouss)eriem(ouss)",
-                        "dueDate": "No Due Date",
-                        "priority": "High",
-                        "complete": false,
-                        "important": true,
-                        "priorityValue": 2,
-                        "index": 25,
-                        "projectIndex": 2
-                    },
-                    {
-                        "title": "Eat healthy food so Yacine can lift her",
-                        "description": "Yacine has back problems, I hope Meriem understand",
-                        "dueDate": "No Due Date",
-                        "priority": "Normal",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 1,
-                        "index": 26,
-                        "projectIndex": 2
-                    },
-                    {
-                        "title": "Block new invites on Tiktok",
-                        "description": "Ahh these guys wont leave her alone...",
-                        "dueDate": "No Due Date",
-                        "priority": "Low",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 0,
-                        "index": 27,
-                        "projectIndex": 2
-                    },
-                    {
-                        "title": "Watch Dr. House Episode",
-                        "description": "Can M(ouss)eriem(ouss) finish all 8 seasons it's good question",
-                        "dueDate": "No Due Date",
-                        "priority": "Low",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 0,
-                        "index": 31,
-                        "projectIndex": "2"
-                    },
-                    {
-                        "title": "Go Lazer game on tuesday",
-                        "description": "Tuesday good day since those kids dont go school in afternoon",
-                        "dueDate": "2024-10-22",
-                        "priority": "Normal",
-                        "complete": false,
-                        "important": false,
-                        "priorityValue": 1,
-                        "index": 31,
-                        "projectIndex": "2"
-                    }
-                ],
-                "index": 2
             }
         ]
         const projects = defaultObject.map((project) => {
