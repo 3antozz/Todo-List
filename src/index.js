@@ -131,6 +131,11 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
             nav.classList.remove("closing"); 
             navButton.focus();
         }
+        if (window.innerWidth <= 768) {
+            document.addEventListener('click', handleClickOutside);
+        } else {
+            document.removeEventListener('click', handleClickOutside);
+        }
     })
     const closeButton = document.querySelector(".close");
     closeButton.addEventListener("click", () => {
@@ -141,6 +146,17 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
             nav.blur();
         }, 500)
     })
+    function handleClickOutside(event) {
+        if (!nav.contains(event.target) && !sandwichButton.contains(event.target)) {
+            nav.classList.add("closing"); 
+            setTimeout(() => {
+                nav.classList.remove("visible");
+                nav.classList.remove("closing"); 
+                nav.blur();
+            }, 500)
+            document.removeEventListener('click', handleClickOutside);
+        }
+    }
 
 })();
 
