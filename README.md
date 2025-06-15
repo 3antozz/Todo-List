@@ -54,5 +54,5 @@ npm run dev
 
 1- Once the server is running:
 
-2- Visit http://localhost:3000 in your browser
+2- Visit http://localhost:8080 in your browser
 
