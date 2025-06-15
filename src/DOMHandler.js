@@ -108,7 +108,7 @@ const displayTodo = function (project, todo, index, addRightDiv = true ) {
 
     const expandButton = document.createElement("button");
     expandButton.classList.add("expand");
-    expandButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Expand</title><path d="M1 3H23L12 22" /></svg>`;
+    expandButton.textContent = "Details";
     expandButton.dataset.index = index;
     expandButton.dataset.projectIndex = todo.projectIndex;
 
@@ -136,6 +136,15 @@ const displayTodo = function (project, todo, index, addRightDiv = true ) {
 
     const infoDiv = document.createElement("div");
     infoDiv.classList.add("info");
+
+    const topDiv = document.createElement("div");
+    topDiv.classList.add("top");
+
+    const bottomDiv = document.createElement("div");
+    bottomDiv.classList.add("bottom");
+
+    const buttonsDiv = document.createElement("div");
+    buttonsDiv.classList.add("buttons");
 
     const datePara = document.createElement("p");
     datePara.classList.add("due-date");
@@ -169,11 +178,14 @@ const displayTodo = function (project, todo, index, addRightDiv = true ) {
     }
 
     rightDiv.appendChild(priorityPara);
-    infoDiv.append(label, expandButton, important, editButton, removeButton, datePara);
+    topDiv.append(label, important)
+    bottomDiv.append(datePara, expandButton)
+    infoDiv.append(topDiv, bottomDiv);
+    buttonsDiv.append(editButton, removeButton);
 
     checkboxDiv.append(input);
 
-    leftDiv.append(checkboxDiv, infoDiv);
+    leftDiv.append(checkboxDiv, infoDiv, buttonsDiv);
 
     initialDiv.append(leftDiv, rightDiv)
 
@@ -207,7 +219,7 @@ const expandTodo = function (todoDiv, project, todoIndex, button) {
 
     const priorityPara = document.createElement("p");
     priorityPara.classList.add("task-priority");
-    priorityPara.textContent = `Priority: ${project.getTodo(todoIndex).priority}`;
+    priorityPara.innerHTML = `<strong>Priority</strong>: ${project.getTodo(todoIndex).priority}`;
 
     const detailPara = document.createElement("p");
     detailPara.classList.add("task-description");
@@ -222,17 +234,18 @@ const expandTodo = function (todoDiv, project, todoIndex, button) {
     detailDiv.append(priorityPara, detailPara);
     todoDiv.appendChild(detailDiv);
 
-    button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Hide</title><path d="M1,21H23L12,2" /></svg>`;
+    button.textContent = "Hide";
     button.classList.add("expanded-button");
 
     todoDiv.classList.add("expanded");
+    detailDiv.style.height = detailDiv.scrollHeight + 'px';
+    detailDiv.style.padding = '1rem 2.5rem';
 }
 
 const retractTodo = function (todoDiv, button) {
     const detail = todoDiv.querySelector(".detail");
-    detail.remove();
-
-    button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Expand</title><path d="M1 3H23L12 22" /></svg>`;
+    detail.remove()
+    button.textContent = "Details";
     button.classList.remove("expanded-button");
     todoDiv.classList.remove("expanded");
 }
@@ -297,7 +310,7 @@ const switchSortButton = function () {
 
     else if (button.classList.contains("default")) {
 
-        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>sort</title><path d="M18 21L14 17H17V7H14L18 3L22 7H19V17H22M2 19V17H12V19M2 13V11H9V13M2 7V5H6V7H2Z" /></svg> Sorted by Date (Ascending)`;
+        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>sort</title><path d="M18 21L14 17H17V7H14L18 3L22 7H19V17H22M2 19V17H12V19M2 13V11H9V13M2 7V5H6V7H2Z" /></svg> Sorted by Date`;
         button.classList.add("ascending");
         button.classList.remove("default");
     }

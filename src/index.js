@@ -114,6 +114,37 @@ import { displayAllProjectsNav, displayProjectName, removeProjectNav, displayTod
 
 })();
 
+(function dynamicNavButton () {
+    const sandwichButton = document.querySelector(".sandwich");
+    const nav = document.querySelector("nav");
+    const navButton = document.querySelector("nav button");
+    sandwichButton.addEventListener("click", () => {
+        if(nav.classList.contains("visible")) {
+            nav.classList.add("closing"); 
+            setTimeout(() => {
+                nav.classList.remove("visible");
+                nav.classList.remove("closing"); 
+                nav.blur();
+            }, 500)
+        } else {
+            nav.classList.add("visible") ;
+            nav.classList.remove("closing"); 
+            navButton.focus();
+        }
+    })
+    const closeButton = document.querySelector(".close");
+    closeButton.addEventListener("click", () => {
+        nav.classList.add("closing"); 
+        setTimeout(() => {
+            nav.classList.remove("visible");
+            nav.classList.remove("closing"); 
+            nav.blur();
+        }, 500)
+    })
+
+})();
+
+
 function updateLocalStorage (projectsHandler) {
     localStorage.setItem("Projects", JSON.stringify(projectsHandler.getAllProjects()))
 }
@@ -148,7 +179,7 @@ function staticButtonsEventListeners (projectsHandler, clickHandler, dates, proj
     }
 
     const navigationButtonsEventListeners = (function () {
-        const buttons = document.querySelectorAll(".dates button");
+        const buttons = document.querySelectorAll(".dates button:not(.close)");
         buttons.forEach((button) => {
             button.addEventListener("click", () => {
                 buttons.forEach((unselectedButton) => {
@@ -417,8 +448,11 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
     }
 
     const removeProject = function (button) {
+        const confirmation = projectsHandler.removeFromProjects(button.dataset.index);
+        if(!confirmation) {
+            return;
+        }
         removeProjectNav(button.dataset.index);
-        projectsHandler.removeFromProjects(button.dataset.index);
         updateLocalStorage (projectsHandler);
         displayAllProjectsNav(projectsHandler.getAllProjects());
         if (projectsHandler.getAllProjects().length === 0) {
@@ -496,11 +530,14 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
     }
 
     const removeTask = function (button) {
-        const todoIndex = button.dataset.index;
-        const projectIndex = button.dataset.projectIndex
-        removeTodo(projectIndex, todoIndex);
+        const todoIndex = button.dataset.index;;
+        const projectIndex = button.dataset.projectIndex;
         const project = projectsHandler.getProject(projectIndex);
-        project.removeTodo(todoIndex);
+        const confirmation = project.removeTodo(todoIndex);
+        if(!confirmation) {
+            return;
+        }
+        removeTodo(projectIndex, todoIndex);
         sortButtonEventListener(project.getUncompleteTodos(), dates.sortAscending(project.getUncompleteTodos()), dates.sortPriority(project.getUncompleteTodos()), false);
         updateLocalStorage (projectsHandler);
     }
@@ -550,7 +587,8 @@ function dynamicButtonsEventListeners  (projectsHandler, dates) {
         }
         else {
             todo.editTodo("complete", true);
-            todoDiv.classList.add("completed-task");
+            todoDiv.classList.add("completed-task", "animated");
+            todoDiv.offsetWidth;
             updateLocalStorage (projectsHandler);
         }
     }

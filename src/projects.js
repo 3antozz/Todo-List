@@ -10,8 +10,13 @@ function handleProjects () {
         project.index = i++;
     }
     const removeFromProjects = (projectIndex) => {
+        const confirmation = confirm("Do you want to remove this project?")
+        if(!confirmation) {
+            return false;
+        }
         const removedProjectIndex = projects.findIndex((project) => project.index == projectIndex) 
         projects.splice(removedProjectIndex, 1);
+        return true;
     }
     const getAllUncompletedTasks = () => {
         const tasks = [];
@@ -75,8 +80,13 @@ class Project {
     }
 
     removeTodo (index) {
+        const confirmation = confirm("Do you want to delete this task?");
+        if(!confirmation) {
+            return false;
+        }
         const removedTodoIndex = this.todos.findIndex((todo) => todo.index == index) 
         this.todos.splice(removedTodoIndex, 1);
+        return true;
     }
 
     editProject (title) {

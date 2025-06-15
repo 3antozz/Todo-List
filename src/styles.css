@@ -1,736 +1,991 @@
+/* @font-face {
+    font-family: 'Roboto';
+    src: url('./fonts/roboto-variablefont_wdthwght-webfont.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+} */
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('fonts/subset-Roboto-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /*
   Josh's Custom CSS Reset
   https://www.joshwcomeau.com/css/custom-css-reset/
 */
 
+
 *, *::before, *::after {
     box-sizing: border-box;
-  }
+}
   
-  * {
-    margin: 0;
+* {
+  margin: 0;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+#root, #__next {
+  isolation: isolate;
+}
+
+:root.light {
+  --bckgrnd-clr: white;
+  --txt-clr: black;
+  --highlight-clr: rgba(255, 166, 0, 1);
+  --nav-color: beige;
+  --svg-hover: white;
+  --input-txt: black;
+  --input-clr: white;
+  --focus-clr: black;
+  --dynamic-btn-clr: rgb(65, 64, 64);
+  --high: rgb(255 69 69);
+  --normal: rgb(78 78 255);
+  --low: rgb(175 185 196);
+  --date: rgb(110 110 110);
+  --sort: beige;
+  --complete: lightgreen;
+  --todo-hover: rgba(0, 0, 0, 0.7);
+  --add-task: rgb(241, 239, 239);
+  --placeholder-clr: rgba(128, 128, 128, 0.5);
+  --confirm: rgba(0, 128, 0, 0.4);
+  --cancel: rgba(255, 0, 0, 0.4);
+  --input-bckgrnd-clr: #f5eeee;
+  --card-color: #fff9f9;
+  --details: #f0e0e0;
+  --checkmark: rgb(61, 160, 61);
+}
+
+
+:root.dark {
+  --bckgrnd-clr: rgb(66, 66, 66);
+  --txt-clr: white;
+  --highlight-clr: rgba(128, 128, 128, 0.7);
+  --nav-color: #1b1b1b;
+  --svg-hover: white;
+  --input-txt: white;
+  --input-clr: rgb(66, 66, 66);
+  --focus-clr: red;
+  --dynamic-btn-clr: rgba(255, 255, 255, 1);
+  --high: rgba(255, 107, 107, 1);
+  --normal: rgba(168, 157, 234, 1);
+  --low: rgba(200, 209, 220, 1);
+  --date: rgba(255, 255, 255, 0.7);
+  --sort: rgba(128, 128, 128, 0.7);
+  --complete: rgba(144, 238, 144, 0.6);
+  --todo-hover: rgba(255, 255, 255, 1);
+  --add-task: rgba(128, 128, 128, 0.7);
+  --placeholder-clr: rgba(255, 255, 255, 0.377);
+  --confirm: rgba(0, 128, 0, 0.9);
+  --cancel: rgba(255, 0, 0, 0.7);
+  --input-bckgrnd-clr: var(--sort);
+  --card-color: #565454;
+  --details: #676464;
+  --checkmark: #00ff00;
+}
+
+
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  font-family: "Roboto", sans-serif;
+  color: var(--txt-clr);
+  background-color: var(--nav-color);
+  transition: background-color 300ms ease, color 300ms ease;
+  font-weight: 500;
+}
+
+header {
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+header > div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+header button {
+  background-color: var(--bckgrnd-clr);
+}
+
+.sandwich {
+  display: none;
+}
+
+.switch-theme {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.switch-theme, .sandwich {
+  padding: 0.2rem;
+  border-radius: 50%;
+  font-weight: 650;
+  border: none;
+  cursor: pointer;
+  background-color: var(--highlight-clr);
+  width: clamp(2rem, 5vw, 2.5rem);
+  transition: transform 200ms ease, background-color 200ms ease;
+}
+
+.switch-theme:hover {
+  background-color: var(--highlight-clr);
+  transform: scale(1.1)
+}
+
+
+.switch-theme svg, .sandwich svg {
+  width: 100%;
+  fill: var(--txt-clr);
+
+}
+
+.sort-button {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  font-weight: 650;
+  padding: 0.5rem 1.2rem;
+  background-color: rgb(252 206 121);
+  transition: transform 300ms ease;
+  cursor: pointer;
+  border: none;
+  color: black;
+}
+
+.sort-button svg {
+  width: 2rem;
+  margin-right: 0.3rem;
+}
+
+.sort-button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.02);
+}
+
+main {
+  flex: 1;
+  display: flex;
+}
+
+nav {
+  position: sticky;
+  padding-top: 0.7rem;
+  min-width: 17rem;
+  transition: transform 300ms ease, opacity 300ms ease;
+  background-color: var(--nav-color);
+  height: 100%;
+}
+
+body button.close {
+  display: none;
+  border: none;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  padding: 0;
+  stroke: none;
+  width: clamp(1.7rem, 4vw, 2rem);
+  cursor: pointer;
+}
+
+
+
+nav h2 {
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+}
+
+.project-div button {
+  border-radius: 10px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  cursor: pointer;
+  transition: transform 300ms ease, background-color 300ms ease, opacity 300ms ease;
+  padding: 0;
+}
+
+.projects h2 svg {
+  width: 2rem;
+  margin-right: 0.4rem;
+}
+
+.projects h2 {
+  display: flex;
+  justify-content: center;
+}
+
+
+.project-div:hover {
+  background-color: var(--highlight-clr);
+}
+
+.project-div:hover button:not(.project-nav), .project-div.selected button:not(.project-nav) {
+  opacity: 1;
+}
+
+
+.top-nav {
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.project-name svg {
+  width: clamp(1.8rem, 4vw, 2.3rem);
+  margin-right: 0.4rem;
+  fill: var(--txt-clr);
+  flex-shrink: 0;
+}
+
+.project-name {
+  display: flex;
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+}
+
+
+.projects h2:first-child {
+  font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+  fill: var(--txt-clr);
+}
+
+
+.dates {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0.4rem;
+}
+
+.dates button:not(.close) {
+  display: flex;
+  padding: 0.5rem;
+  padding-left: 1.5rem;
+  align-items: center;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  fill: var(--txt-clr);
+  transition: background-color 300ms ease;
+  cursor: pointer;
+}
+
+.dates button:not(.close) svg {
+  width: clamp(1.5rem, 2vw, 1.8rem);
+  flex-shrink: 0;
+  margin-right: 0.4rem;
+}
+
+
+.dates button:not(.close):hover {
+  background-color: var(--highlight-clr);
+}
+
+
+.projects {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.add-project {
+  order: 2;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  font-size: 1.2rem;
+  padding: 0.3rem 1rem;
+  font-weight: 650;
+  transition: background-color 200ms ease;
+  cursor: pointer;
+}
+
+.add-project-ui {
+  order: 1;
+  display: none;
+  padding: 0.4rem 1.1rem;
+  flex-direction: column;
+}
+
+.add-project svg, .add-task svg {
+  width: clamp(2.1rem, 4.5vw, 2.8rem);
+  display: inline-block;
+  vertical-align: middle;
+  fill: black;
+  background-color: rgb(252 206 121);
+  padding: 0.2rem;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+
+.add-project:hover {
+  background-color: var(--highlight-clr);
+}
+
+.project-div {
+  display: flex;
+  align-items: center;
+  transition: background-color 300ms ease;
+  padding: 0.5rem 1rem;
+  padding-right: 0.5rem;
+  gap: 0.5rem;
+}
+
+.project-nav > svg {
+  width: clamp(1.5rem, 2vw, 1.8rem);
+  margin-right: 0.4rem;
+  flex-shrink: 0;
+}
+
+.project-nav {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  font-weight: 650;
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  text-align: left;
+  padding-left: 1rem;
+}
+
+
+.project-edit-button, .project-remove-button {
+  width: clamp(1.7rem, 3vw, 2rem);
+  padding: 0;
+  fill: var(--dynamic-btn-clr);
+}
+
+.project-edit-button:hover, .project-remove-button:hover {
+  fill: red;
+}
+
+
+.add-project-ui input {
+  width: 100%;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  padding: 0.4rem 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  font-weight: 500;
+  color: var(--input-txt);
+  background-color: var(--input-clr);
+}
+
+.add-project-ui input::placeholder {
+  color: var(--placeholder-clr);
+}
+
+.add-project-ui input:focus {
+  border: 2px solid var(--txt-clr);
+}
+
+.form-buttons button {
+  padding: 0.4rem 0.5rem;
+  flex: 1;
+  border-radius: 5px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: transform 300ms ease, filter 300ms ease;
+  border: none;
+}
+
+.form-buttons button:hover {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
+
+.confirm-project, .confirm {
+  background-color: var(--confirm);
+}
+
+.form-buttons button:nth-child(2), .cancel-task {
+  background-color: var(--cancel);
+}
+
+.form-buttons {
+  display: flex;
+  flex: 1;
+  gap: 0.7rem;
+}
+
+
+.add-task {
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  font-size: 1.2rem;
+  font-weight: 650;
+  padding: 0.4rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 200ms ease, background-color 200ms ease;
+}
+
+.add-task-ui {
+  order: 1;
+  display: none;
+  gap: 1rem;
+  justify-content: center;
+}
+
+
+.add-task-ui > div {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.add-task-ui input {
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  padding: 0.4rem 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  font-weight: 500;
+  color: var(--input-txt);
+  background-color: var(--input-bckgrnd-clr);
+}
+
+.add-task-ui input::placeholder {
+  color: var(--placeholder-clr);
+}
+
+.add-task-ui input[type="text"]:focus {
+  border: 2px solid var(--txt-clr)
+}
+
+
+textarea {
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  padding: 0.4rem 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  font-weight: 500;
+  color: var(--input-txt);
+  background-color: var(--input-bckgrnd-clr);
+  flex: 1;
+}
+textarea::placeholder {
+  color: var(--placeholder-clr);
+}
+
+textarea:focus {
+  border: 2px solid var(--txt-clr);
+}
+
+.add-task-ui button {
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  font-weight: 650;
+  transition: transform 300ms ease;
+  border: none;
+  cursor: pointer;
+}
+
+.add-task-ui button:hover {
+  transform: scale(1.05);
+}
+
+.radios {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.radios p {
+  align-content: center;
+}
+
+.radio {
+  text-align: center;
+}
+
+
+.content {
+  flex: 1;
+  padding: 1rem 4vw;
+  background-color: var(--bckgrnd-clr);
+  transition: background-color 300ms ease;
+}
+
+.content > h1 {
+  margin-bottom: 1rem;
+}
+
+.expand {
+  padding: 0;
+  line-height: normal;
+  margin-left: 2%;
+  font-size: 0.9rem;
+  background-color: rgba(128, 128, 128, 0);
+  border: none;
+  vertical-align: middle;
+  background-color: var(--details);
+  padding: 0.2rem 0.7rem;
+  border-radius: 10px;
+  color: var(--txt-clr);
+  cursor: pointer;
+  transition: transform 300ms ease;
+}
+
+
+.expand:hover {
+  transform: scale(1.1);
+}
+
+
+.edit, .task-remove, .important-button {
+  padding: 0;
+  line-height: normal;
+  font-size: 1.3rem;
+  background-color: rgba(128, 128, 128, 0);
+  border: none;
+  width: clamp(1.9rem, 3.5vw, 2.2rem);
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+
+
+body .important-task {
+  opacity: 1;
+  width: clamp(1.6rem, 3.5vw, 1.8rem);
+}
+
+.expand, .edit, .task-remove, .important-button {
+  fill: var(--dynamic-btn-clr);
+}
+
+.initial svg, .project-div button:not(:first-of-type) svg {
+  transition: transform 300ms ease, background-color 300ms ease;
+  border-radius: 50%;
+  padding: 0.2rem;
+}
+
+.initial svg:hover {
+  transform: scale(1.2);
+  background-color: var(--highlight-clr);
+}
+
+.buttons svg:hover {
+  fill: var(--txt-clr);
+}
+
+
+.project-div button:not(:first-of-type) svg:hover {
+  transform: scale(1.2);
+  background-color: var(--nav-color);
+  fill: var(--txt-clr);
+}
+
+body .important-task {
+  background-color: rgba(255, 166, 0, 1);
+  fill: var(--card-color);
+  border-radius: 50%;
+}
+
+.info {
+  flex: 1;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  transition: opacity 300ms ease;
+}
+
+
+
+.info label {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.info .top {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.info .bottom {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.todos {
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+
+.todo {
+  padding: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  background-color: var(--card-color);
+}
+
+.todo:hover .buttons, .todo:hover .important-button {
+  opacity: 1;
+}
+
+.initial {
+  padding: 0 0.7rem;
+  font-size: 1.3rem;
+  display: flex;
+}
+
+.todo .left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.todo .right {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-weight: 650;
+  margin-left: 1.5rem;
+  align-content: center;
+}
+
+
+.due-date {
+  color: var(--date);
+  font-size: 0.9rem;
+}
+
+.right svg {
+  width: 2rem;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.4rem;
+  fill: var(--txt-clr);
+}
+
+.right p {
+  text-align: left;
+}
+
+
+textarea {
+  resize: vertical;
+}
+
+.add-task:hover {
+  background-color: var(--add-task);
+  transform: scale(1.05);
+}
+
+.todo input {
+  margin-right: 1rem;
+  transform: scale(1.5);
+}
+
+.detail {
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  padding: 0 2.5rem;
+  transition: height 300ms ease, padding 300ms ease;
+  box-sizing: content-box;
+  height: 0;
+}
+
+/* .todo:has(> .detail) .initial {
+  padding-bottom: 1rem;
+} */
+
+
+.checkbox input {
+  /* margin-top: 1rem; */
+  cursor: pointer;
+}
+
+
+footer {
+  text-align: center;
+  padding: 0.3rem;
+  font-weight: 650;
+}
+
+.low {
+  border-left: 10px solid var(--low);
+}
+
+.normal {
+  border-left: 10px solid var(--normal);
+}
+
+.high {
+  border-left: 10px solid var(--high);
+}
+
+.selected {
+  background-color: var(--highlight-clr) !important;
+}
+
+.edited {
+  border : 3px solid var(--high);
+}
+
+.completed-task {
+  border-left: 10px solid var(--complete);
+}
+
+.completed-task.animated {
+  animation: 1000ms completed forwards;
+  animation-delay: 100ms;
+}
+
+
+input[type="radio"]{
+  transform: scale(1.6);
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+input[type="date"] {
+  cursor: pointer;
+}
+
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(17%) sepia(86%) saturate(7492%) hue-rotate(0deg) brightness(94%) contrast(116%);
+}
+
+.add-task-ui label {
+  display: inline-block;
+  font-weight: 650;
+  min-width: 4rem;
+}
+
+.text {
+  width: min(25rem, 45rem);
+}
+
+input[type="checkbox"]{
+  appearance: none;
+  background-color: rgba(255, 255, 255, 0);
+  width: 1rem;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  position: relative;
+  border: 2px solid grey;
+}
+
+
+input[type="checkbox"]::before {
+  display: block;
+  content: "✔";
+  font-size: 1.2rem;
+  color: var(--checkmark);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  visibility: hidden;
+  position: relative;
+  bottom: 45%;
+  right: 5%;
+}
+
+input[type="checkbox"]:checked::before {
+  visibility: visible;
+}
+
+@keyframes completed {
+  0% {
+    background-color: var(--card-color);
   }
-  
-  body {
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
+  50% {
+    background-color: var(--complete);
   }
-  
-  img, picture, video, canvas, svg {
+  100% {
+    background-color: var(--card-color);
+  }
+}
+
+@keyframes dropdown {
+  0% {
+    height: 0;
+  }
+  50% {
+    height: 100px;
+  }
+  100% {
+    height: fit-content;
+  }
+}
+
+@media (min-width: 768px) {
+  .project-div button:not(.project-nav) {
+    opacity: 0;
+  }
+  .important-button:not(.important-task) {
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+
+  .buttons {
+    opacity: 0;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .sandwich {
     display: block;
-    max-width: 100%;
   }
-  
-  input, button, textarea, select {
-    font: inherit;
-    color: inherit;
-  }
-  
-  p, h1, h2, h3, h4, h5, h6 {
-    overflow-wrap: break-word;
-  }
-  
-  #root, #__next {
-    isolation: isolate;
-  }
-
-  :root.light {
-    --bckgrnd-clr: white;
-    --txt-clr: black;
-    --highlight-clr: rgba(255, 166, 0, 1);
-    --nav-color: beige;
-    --svg-hover: white;
-    --input-txt: black;
-    --input-clr: white;
-    --focus-clr: black;
-    --dynamic-btn-clr: rgba(128, 128, 128, 0.7);
-    --high: rgba(238, 10, 10, 0.4);
-    --normal: rgba(0, 0, 255, 0.3);
-    --low: rgba(200, 209, 220, 0.5);
-    --date: rgb(123, 122, 122);
-    --sort: beige;
-    --complete: lightgreen;
-    --todo-hover: rgba(0, 0, 0, 0.7);
-    --add-task: rgb(241, 239, 239);
-    --placeholder-clr: rgba(128, 128, 128, 0.5);
-    --confirm: rgba(0, 128, 0, 0.4);
-    --cancel: rgba(255, 0, 0, 0.4);
-    --input-bckgrnd-clr: white;
-  }
-
-
-  :root.dark {
-    --bckgrnd-clr: rgb(66, 66, 66);
-    --txt-clr: white;
-    --highlight-clr: rgba(128, 128, 128, 0.7);
-    --nav-color: #1b1b1b;
-    --svg-hover: white;
-    --input-txt: white;
-    --input-clr: rgb(66, 66, 66);
-    --focus-clr: red;
-    --dynamic-btn-clr: rgba(255, 255, 255, 0.4);
-    --high: rgba(255, 107, 107, 0.5);
-    --normal: rgba(168, 157, 234, 0.5);
-    --low: rgba(200, 209, 220, 0.5);
-    --date: rgba(255, 255, 255, 0.7);
-    --sort: rgba(128, 128, 128, 0.7);
-    --complete: rgba(144, 238, 144, 0.6);
-    --todo-hover: rgba(255, 255, 255, 1);
-    --add-task: rgba(128, 128, 128, 0.7);
-    --placeholder-clr: rgba(255, 255, 255, 0.377);
-    --confirm: rgba(0, 128, 0, 0.9);
-    --cancel: rgba(255, 0, 0, 0.7);
-    --input-bckgrnd-clr: var(--sort);
-  }
-  
-
-
-  body {
-    display: flex;
-    flex-direction: column;
-    height: 100dvh;
-    font-family: "Roboto", sans-serif;
-    color: var(--txt-clr);
+  body button.close {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 5px;
   }
 
   header {
-    padding: 1rem;
+    position: fixed;
+    top: 0;
+    z-index: 999;
     background-color: var(--nav-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    width: 100%;
+    padding: 0.8rem 1rem;
   }
-
-
-  header button {
-    background-color: var(--bckgrnd-clr);
-  }
-
-  .switch-theme {
-    display: flex;
-    align-items: center;
-    border-radius: 10px;
-    font-weight: bold;
-    border: 1px solid var(--txt-clr);
-  }
-
-
-  .switch-theme svg {
-    width: 2rem;
-    fill: var(--txt-clr);
-  }
-
-  .sort-button {
-    display: flex;
-    align-items: center;
-    border-radius: 10px;
-    font-weight: bold;
-    border: 1px solid var(--txt-clr);
-  }
-
-  .sort-button svg {
-    width: 2rem;
-    fill: var(--txt-clr);
-    margin-right: 0.3rem;
-  }
-
-  main {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 1fr 4.2fr;
-  }
-
   nav {
-    background-color: var(--nav-color);
-    padding-top: 0.7rem;
+    position: fixed;
+    transform: translateX(-100%);
+    opacity: 0;
+    visibility: hidden;
+    min-height: 100dvh;
+    height: calc(100dvh - 4.5rem); 
+    top: 4.5rem;
+    z-index: 9999;
   }
-
-
-  nav h3 {
-    border-radius: 10px;
-    padding: 0.5rem 1rem;
-  }
-
-  .project-div button {
-    border-radius: 10px;
-    border: none;
-    background-color: rgba(255, 255, 255, 0);
-  }
-
-  .projects h3 svg {
-    width: 2rem;
-    margin-right: 0.4rem;
-  }
-
-  .projects h3 {
-    display: flex;
-    justify-content: center;
-  }
-
-
-  .project-div:hover {
-    background-color: var(--highlight-clr);
-    color: white;
-    scale: 1.02;
-  }
-
-
-  .top-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .sort-button {
-    margin-right: 10rem;
-    padding: 0.5rem 0.5rem;
-    font-weight: bold;
-    border-radius: 10px;
-    background-color: var(--sort);
-  }
-
-
-  .project-name svg {
-    width: 2.5rem;
-    margin-right: 0.4rem;
-    fill: var(--txt-clr);
-  }
-
-  .sort-button:hover {
-    scale: 1.1;
-  }
-
-  .project-name {
-    display: flex;
-    font-size: 2rem;
-  }
-
-
-  .projects h3:first-child {
-    font-size: 1.5rem;
-    fill: var(--txt-clr);
-  }
-  
-
-  .dates {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 0.4rem;
-  }
-
-  .dates button {
-    display: flex;
-    padding-left: 15%;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    align-items: center;
-    font-size: 1.3rem;
-    font-weight: bold;
-    border-radius: 10px;
-    border: none;
-    background-color: rgba(0, 0, 0, 0);
-    fill: var(--txt-clr);
-  }
-
-  .dates button svg {
-    width: 2rem;
-    margin-right: 0.4rem;
-  }
-
-
-  .dates button:hover {
-    background-color: var(--highlight-clr);
-    color: var(--svg-hover);
-    scale: 1.04;
-    fill: var(--svg-hover);
-  }
-
 
   .projects {
-    display: flex;
-    flex-direction: column;
+    overflow-y: auto;
+    height: 50%;
   }
-
-  .add-project {
-    order: 2;
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0);
-    border: none;
-    font-size: 1.2rem;
-    padding: 0.5rem 1rem;
-    font-weight: bold;
-  }
-
-  .add-project-ui {
-    order: 1;
-    display: none;
-    padding: 0.4rem 1.1rem;
-    flex-direction: column;
-  }
-
-  .add-project svg {
-    width: 3rem;
-    display: inline-block;
-    vertical-align: middle;
-    fill: red;
-  }
-
-  .project-div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-  }
-
-  .project-nav > svg {
-    width: 1.8rem;
-    margin-right: 0.4rem;
-  }
-
-  .project-nav {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    font-weight: bold;
-    font-size: 1.4rem;
-    padding: 0.5rem;
-    text-align: left;
-    padding-left: 1rem;
-  }
-
-
-  .project-edit-button, .project-remove-button   {
-    width: 1.4rem;
-    padding: 0;
-    margin-right: 0.7rem;
-    fill: var(--dynamic-btn-clr);
-  }
-
-  .project-edit-button:hover, .project-remove-button:hover {
-    scale: 1.8;
-    fill: red;
-  }
-
-
-  .add-project:hover {
-    background-color: rgba(255, 166, 0, 0.576);
-    border-radius: 10px;
-  }
-
-  .add-project-ui input {
-    width: 100%;
-    border-radius: 5px;
-    outline: none;
-    border: 1px solid var(--txt-clr);
-    padding: 0.2rem 0.5rem;
-    margin-bottom: 0.5rem;
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: var(--input-txt);
-    background-color: var(--input-clr);
-  }
-
-  .add-project-ui input::placeholder {
-    color: var(--placeholder-clr);
-  }
-
-  .add-project-ui input:focus {
-    box-shadow: inset 1px 1px 1px 1px var(--focus-clr);
-  }
-
-  .add-project-ui input:hover {
-    scale: 1.02;
-  }
-
-  .form-buttons button {
-    padding: 0.2rem 0.5rem;
-    flex: 1;
-    border-radius: 5px;
-    font-weight: bold;
-  }
-
-  .form-buttons button:hover {
-    scale: 1.1;
-  }
-
-  .form-buttons button:active {
-    scale: 1.2;
-  }
-
-  .confirm-project, .confirm {
-    background-color: var(--confirm);
-  }
-
-  .form-buttons button:nth-child(2), .cancel-task {
-    background-color: var(--cancel);
-  }
-
-  .form-buttons {
-    display: flex;
-    flex: 1;
-    gap: 0.7rem;
-  }
-
-
-  .add-task {
-    text-align: left;
-    background-color: rgba(255, 255, 255, 0);
-    border: none;
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 1rem;
-    border-radius: 10px;
-  }
-
-  .add-task-ui {
-    order: 1;
-    display: none;
-    gap: 1rem;
-    justify-content: center;
-  }
-
-  .add-task svg {
-    width: 3rem;
-    display: inline-block;
-    vertical-align: middle;
-    fill: red;
-  }
-
-  .add-task-ui > div {
-    display: flex;
-    flex-direction: column;
-  }
-
-
-  .add-task-ui input {
-    border-radius: 5px;
-    outline: none;
-    border: 1px solid var(--txt-clr);
-    padding: 0.2rem 0.5rem;
-    margin-bottom: 0.5rem;
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: var(--input-txt);
-    background-color: var(--input-bckgrnd-clr);
-  }
-
-  .add-task-ui input::placeholder {
-    color: var(--placeholder-clr);
-  }
-
-  .add-task-ui input[type="text"]:focus {
-    box-shadow: inset 1px 1px 1px 1px var(--focus-clr);
-  }
-
-  .add-task-ui input[type="text"]:hover {
-    scale: 1.02;
-  }
-
-  textarea {
-    border-radius: 5px;
-    outline: none;
-    border: 1px solid var(--txt-clr);
-    padding: 0.2rem 0.5rem;
-    margin-bottom: 0.5rem;
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: var(--input-txt);
-    background-color: var(--input-bckgrnd-clr);
-    flex: 1;
-  }
-  textarea::placeholder {
-    color: var(--placeholder-clr);
-  }
-
-  textarea:focus {
-    box-shadow: inset 1px 1px 1px 1px var(--focus-clr);
-  }
-
-  textarea:hover {
-    scale: 1.02;
-  }
-
-
-  .add-task-ui button {
-    padding: 0.2rem 0.5rem;
-    border-radius: 5px;
-    font-weight: bold;
-  }
-
-  .add-task-ui button:hover {
-    scale: 1.1;
-  }
-
-  .add-task-ui button:active {
-    scale: 1.2;
-  }
-
-  .radios {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .radios h2 {
-    align-content: center;
-  }
-
-  .radio {
-    text-align: center;
-  }
-
 
   .content {
-    padding: 1rem 4rem;
-    background-color: var(--bckgrnd-clr);
+    margin-top: 5rem;
+  }
+  .top-nav {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .top-nav button {
+    padding: 0.4rem 0.8rem;
+  }
+  body nav.visible {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
   }
 
-  .content > h1 {
-    margin-bottom: 1rem;
+  body nav.closing {
+    transform: translateX(-100%);
+  } 
+  .content {
+    padding: 1rem;
   }
-
-  .expand {
-    padding: 0;
-    line-height: normal;
-    margin-left: 2%;
-    font-size: 1.3rem;
-    background-color: rgba(128, 128, 128, 0);
-    border: none;
-    width: 1rem;
-    vertical-align: middle;
-  }
-
-  .expanded-button {
-    fill: red !important;
-    scale: 1.5 !important;
-  }
-
-
-  .edit, .task-remove, .important-button {
-    padding: 0;
-    line-height: normal;
-    margin-left: 1rem;
-    font-size: 1.3rem;
-    background-color: rgba(128, 128, 128, 0);
-    border: none;
-    vertical-align: middle;
-    width: 1.8rem;
-  }
-
-  .important-button {
-    margin-right: 10%;
-  }
-
-
-
-  .expand, .edit, .task-remove, .important-button {
-    fill: var(--dynamic-btn-clr);
-  }
-
-  .info svg:hover  {
-    scale: 1.8;
-    fill: black;
-  }
-
-  .todo button:first-of-type svg:hover {
-    scale: 1.2;
-    fill: red;
-  }
-
-  .todo button:nth-of-type(2) svg:hover {
-    fill: red;
-  }
-
-  .info {
-    flex: 1;
-  }
-
-  .info label {
-    font-weight: bold;
-    font-size: 1.5rem;
-    vertical-align: middle;
-  }
-
-  .expand:hover {
-    scale: 1.3;
-  }
-
-
-
   .todos {
-    padding: 1rem 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
+    padding: 1rem 0;
   }
-
-
+  .sort-button svg {
+    display: none;
+  }
+  .text {
+    width: 100%;
+    max-width: 20rem;
+  }
+  .add-task-ui {
+    flex-wrap: wrap;
+  }
   .todo {
-    padding: 0.7rem;
-    font-size: 1.3rem;
-    border-top: 1px solid rgba(128, 128, 128, 0.3);
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-    box-shadow: 1px 1px 1px 1px #80808061;
+    padding: 0.5rem 0.7rem;
   }
-
-  .todo:hover {
-    box-shadow: 0px 0px 5px 1px var(--todo-hover);
-  }
-
   .initial {
-    padding: 0.7rem;
-    font-size: 1.3rem;
-    display: flex;
-    padding-bottom: 0;
-  }
-
-  .todo .left {
-    flex: 1;
-    display: flex;
+    padding: 0;
+    width: 100%;
   }
 
   .todo .right {
-    font-size: 1.5rem;
-    margin-top: 1%;
-    font-weight: bold;
+    margin-left: 0;
   }
-
-
-  .due-date {
-    color: var(--date);
-    font-size: 1.1rem;
-    font-weight: bold;
+  .todo .left {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
   }
-
-  .right svg {
-    width: 2rem;
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 0.4rem;
-    fill: var(--txt-clr);
+  .buttons {
+    gap: 1rem;
   }
-
-  .right p {
-    text-align: left;
+  .initial {
+    position: relative;
   }
-
-
-  textarea {
-    resize: none;
+  .checkbox {
+    position: absolute;
+    top: 0;
+    right: 0;
   }
-
-  .add-task:hover {
-    background-color: var(--add-task);
-  }
-
   .todo input {
-    margin-right: 1rem;
-    scale: 1.5;
+    margin-right: 0;
+    transform: scale(1.3);
   }
 
   .detail {
-    font-size: 1.2rem;
-    padding: 0 2.5rem;
+    padding: 1rem 0 !important;
   }
+}
 
-
-  .task-priority {
-    font-weight: bold;
-  }
-
-  .checkbox input {
-    margin-top: 1rem;
-  }
-
-
-  footer {
-    text-align: center;
-    background-color: var(--nav-color);
-    padding: 0.3rem;
-    font-weight: bold;
-  }
-
-  .low {
-    background-color: var(--low);
-  }
-
-  .normal {
-    background-color: var(--normal);
-  }
-
-  .high {
-    background-color: var(--high);
-  }
-
-  .selected {
-    background-color: var(--highlight-clr) !important;
-    color: var(--svg-hover);
-    fill: var(--svg-hover) !important;
-  }
-
-  .edited {
-    border : 5px solid red;
-  }
-
-  .completed-task {
-    background-color: var(--complete);
-  }
-
-  .important-task {
-    fill: yellow;
-    scale: 1.5;
-  }
-
-
-  input[type="radio"]{
-    scale: 1.6;
-    margin-left: 4px;
-  }
-
-  input[type="date"]::-webkit-calendar-picker-indicator {
-      filter: invert(17%) sepia(86%) saturate(7492%) hue-rotate(0deg) brightness(94%) contrast(116%);
-  }
-
-  .add-task-ui label {
-    display: inline-block;
-    font-weight: bold;
-    min-width: 4rem;
-  }
-
-  .text {
-    width: min(25rem, 45rem);
-  }
-
-  input[type="checkbox"]{
-    appearance: none;
-    background-color: white;
-    width: 1rem;
-    aspect-ratio: 1/1;
-    border-radius: 50%;
-    position: relatve;
-    border: 1px solid grey;
-  }
-
-
-  input[type="checkbox"]::before {
-    display: block;
-    content: "✔";
-    font-size: 1.2rem;
-    color: green;
+@media (max-width: 450px) {
+  nav {
+    min-width: auto;
     width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    visibility: hidden;
-    position: relative;
-    bottom: 40%;
-    right: 5%;
   }
+}
 
-  input[type="checkbox"]:checked::before {
-    visibility: visible;
-  }
 
 
 
